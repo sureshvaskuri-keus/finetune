@@ -4,7 +4,2662 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>KEUS · LIGHTING-CATALOGUE</title>
-<link rel="stylesheet" href="./assets/css/catalogue.css">
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --bg:#f2efe9;--paper:#fbfaf7;--card:#fff;--ink:#111;--muted:#746f68;
+    --line:#d9d4cc;--line2:#ece8e1;--black:#0b0b0b;--shadow:0 18px 50px rgba(20,18,15,.08);
+  }
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,Helvetica,sans-serif}
+  button,input,select{font:inherit} button{cursor:pointer}
+  .topbar{background:var(--black);color:#fff}
+  .topbar-inner{max-width:1480px;margin:auto;min-height:64px;padding:0 34px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{font-size:20.8px;font-weight:700;letter-spacing:.33em}.top-meta{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#bdbdbd}
+  .shell{max-width:1480px;margin:auto;padding:34px 34px 52px}
+  .hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;padding:8px 0 28px;border-bottom:1px solid var(--line)}
+  .eyebrow{margin-bottom:10px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  h1{margin:0;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(49.4px,6.5vw,88.4px);line-height:.98;letter-spacing:-.035em}
+  .hero-side{max-width:460px;text-align:right}.hero-side p{margin:0 0 14px;font-size:16.9px;line-height:1.6;color:var(--muted)}
+  .load-row{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+  .btn{border:1px solid #aaa49b;background:transparent;color:var(--ink);border-radius:999px;padding:9px 14px;font-size:14.3px;transition:.18s ease}
+  .btn:hover:not(:disabled){background:var(--ink);border-color:var(--ink);color:#fff}.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.primary:hover{background:#2a2a2a}.btn:disabled{opacity:.3;cursor:default}
+  #csvInput{display:none}
+  .data-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.3px;color:var(--muted)}
+  .status strong{color:var(--ink);font-weight:600}.hint{text-align:right}
+
+  .filter-shell{position:sticky;top:0;z-index:30;padding:12px 0 10px;background:rgba(242,239,233,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);margin-bottom:18px}
+  .toolbar{display:grid;grid-template-columns:minmax(260px,1.55fr) repeat(3,minmax(145px,.58fr)) auto;gap:9px}
+  .mobile-product-label{display:none}
+  .field{height:42px;width:100%;border:1px solid #cfc9c0;background:rgba(255,255,255,.68);color:var(--ink);border-radius:2px;padding:0 12px;outline:none;font-size:15.6px}
+  .field:focus{border-color:#6e675e;background:#fff}.reset-btn,.more-btn{height:42px;border-radius:2px;white-space:nowrap}
+  .advanced{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-height:0;opacity:0;overflow:hidden;transition:max-height .24s ease,opacity .18s ease,padding .24s ease;padding-top:0}
+  .advanced.open{max-height:260px;opacity:1;padding-top:9px}
+  .finish-panel{padding-top:10px;display:flex;align-items:flex-start;gap:12px}
+  .finish-title{flex:0 0 auto;padding-top:6px;font-size:11.7px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .finish-chips{display:flex;gap:7px;flex-wrap:wrap}
+  .finish-chip{display:inline-flex;align-items:center;gap:7px;height:30px;border:1px solid #cfc9c0;background:rgba(255,255,255,.48);border-radius:999px;padding:0 10px 0 7px;color:#4b4640;font-size:13px;transition:.15s ease}
+  .finish-chip:hover,.finish-chip.active{border-color:#111;background:#fff;color:#111}.finish-chip.active{box-shadow:inset 0 0 0 1px #111}
+  .swatch{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.14);flex:0 0 auto;background:#ddd}
+  .swatch.all{background:conic-gradient(#111 0 25%,#f5f3ee 0 50%,#c9aa77 0 75%,#7d98aa 0);}
+  .sw-white{background:#f7f6f1}.sw-mat-black{background:#181818}.sw-champagne-gold{background:linear-gradient(135deg,#8e6e3f,#e2ca96 45%,#a78450)}
+  .sw-rose-gold{background:linear-gradient(135deg,#8c5558,#d7a6a4 48%,#a56667)}.sw-brown{background:#684834}.sw-coffee{background:#4c372f}
+  .sw-dark-gray{background:#57595b}.sw-ballet-blue{background:#8faabd}.sw-chrome{background:linear-gradient(135deg,#656565,#f3f3f3 48%,#7d7d7d)}
+  .sw-chrome-black{background:linear-gradient(135deg,#111,#5c5c5c 44%,#171717)}.sw-standard{background:#d7d1c6}
+  .active-filters{display:flex;gap:7px;flex-wrap:wrap;padding-top:9px}.active-filters:empty{display:none}
+  .filter-pill{border:0;background:#ded8cf;border-radius:999px;padding:6px 9px;font-size:11.7px;color:#504a43}.filter-pill b{font-weight:600}.filter-pill span{margin-left:6px;color:#8a8178}
+
+  .catalogue-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:4px 0 14px}.catalogue-head h2{margin:0;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:31.2px}.catalogue-count{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .card{position:relative;width:100%;border:1px solid var(--line2);background:var(--paper);color:inherit;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;overflow:hidden}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#c7c0b5}
+  .finish-gallery-card .card-title{margin-bottom:6px}
+  .finish-gallery-card .finish-name{display:flex;align-items:center;gap:8px;margin:0 0 13px;font-size:14.3px;color:#5d5750}
+  .finish-gallery-card .finish-name .swatch{width:17px;height:17px}
+  .finish-gallery-card .card-foot{margin-top:12px}
+  .card-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+  .card-image{aspect-ratio:1.15/1;display:flex;align-items:center;justify-content:center;background:#fff;border-bottom:1px solid var(--line2);overflow:hidden}
+  .card-image img{width:78%;height:78%;object-fit:contain;display:block;transition:transform .25s ease}.card:hover .card-image img{transform:scale(1.025)}
+  .card-body{padding:16px 16px 12px}.card-kicker{margin-bottom:7px;font-size:11.7px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);min-height:12px}
+  .card-title{margin:0 0 13px;font-family:Georgia,'Times New Roman',serif;font-size:28.6px;font-weight:400;line-height:1.05}
+  .spec-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line2)}.mini-spec{padding-top:10px}.mini-spec:nth-child(even){padding-left:12px;border-left:1px solid var(--line2)}
+  .mini-label{font-size:10.4px;letter-spacing:.13em;text-transform:uppercase;color:#999188;margin-bottom:4px}.mini-value{font-size:14.3px;color:#2d2925;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-value.beam-values{white-space:normal;overflow:visible;text-overflow:clip}
+  .card-finishes{display:flex;align-items:center;gap:6px;min-height:29px;margin:11px 0 0;padding-top:10px;border-top:1px solid var(--line2)}
+  .card-finish-label{margin-right:2px;font-size:10.4px;letter-spacing:.12em;text-transform:uppercase;color:#9a938a}.card-swatch{width:19px;height:19px;border:1px solid transparent;border-radius:50%;padding:2px;background:transparent;display:inline-flex;align-items:center;justify-content:center}
+  .card-swatch .swatch{width:13px;height:13px}.card-swatch:hover,.card-swatch.active{border-color:#111}.more-finishes{font-size:11.7px;color:var(--muted);margin-left:2px}
+  .card-foot{display:flex;justify-content:space-between;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line2);font-size:11.7px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .match-tag{position:absolute;top:10px;right:10px;z-index:2;background:rgba(17,17,17,.86);color:#fff;border-radius:999px;padding:5px 8px;font-size:10.4px;letter-spacing:.08em;text-transform:uppercase}
+  .pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px}.page-info{font-size:13px;color:var(--muted);min-width:130px;text-align:center}
+  .empty{grid-column:1/-1;padding:70px 28px;background:var(--paper);border:1px dashed #c9c2b7;text-align:center}.empty h3{margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:33.8px}.empty p{margin:0 auto 16px;max-width:620px;color:var(--muted);font-size:15.6px;line-height:1.6}
+  .footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:11.7px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  .modal{position:fixed;inset:0;z-index:100;display:none;background:rgba(0,0,0,.58);padding:22px;overflow:auto}.modal.open{display:block}.modal-panel{width:min(1200px,100%);margin:18px auto;background:var(--paper);box-shadow:0 28px 90px rgba(0,0,0,.28)}
+  .modal-top{min-height:70px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.modal-brand{font-size:15.6px;font-weight:700;letter-spacing:.25em}.close-btn{width:38px;height:38px;border:1px solid var(--line);background:transparent;border-radius:50%;font-size:26px;line-height:1}.close-btn:hover{background:#111;color:#fff;border-color:#111}
+  .detail-wrap{display:grid;grid-template-columns:minmax(350px,.92fr) minmax(0,1.25fr)}.visual-col{padding:34px;border-right:1px solid var(--line)}.main-image{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line2)}.main-image img{width:80%;height:80%;object-fit:contain}
+  .detail-finishes{margin-top:13px}.detail-finish-label{font-size:10.4px;letter-spacing:.13em;text-transform:uppercase;color:#918a81;margin-bottom:8px}.finish-options{display:flex;gap:8px;flex-wrap:wrap}.finish-option{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;padding:6px 9px 6px 6px;border-radius:999px;font-size:11.7px;color:#514b45}.finish-option.active{border-color:#111;box-shadow:inset 0 0 0 1px #111}.finish-option .swatch{width:18px;height:18px}
+  .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.thumb{width:68px;height:68px;padding:4px;border:1px solid var(--line);background:#fff}.thumb.active{border-color:#111;box-shadow:inset 0 0 0 1px #111}.thumb img{width:100%;height:100%;object-fit:contain}.finish-note{margin-top:10px;font-size:13px;color:var(--muted)}
+  .info-col{padding:34px}.detail-kicker{font-size:11.7px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}.detail-title{margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:54.6px;line-height:1}.detail-sub{font-size:14.3px;color:var(--muted);margin-bottom:24px}
+  .spec-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}.spec-cell{min-height:76px;padding:12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.spec-label{font-size:10.4px;letter-spacing:.13em;text-transform:uppercase;color:#918a81;margin-bottom:6px}.spec-value{font-size:15.6px;line-height:1.35}
+  .variants{padding:0 34px 34px}.variants-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:4px 0 12px}.variants h3{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:28.6px;font-weight:400}.variant-filter-note{font-size:13px;color:var(--muted);text-align:right}.table-wrap{overflow:auto;border:1px solid var(--line)}table{border-collapse:collapse;width:100%;min-width:1500px;background:#fff}th,td{padding:10px 11px;border-bottom:1px solid var(--line2);border-right:1px solid var(--line2);text-align:left;white-space:nowrap}th{font-size:10.4px;letter-spacing:.12em;text-transform:uppercase;color:#817a72;background:#f5f2ed;font-weight:600}td{font-size:13px;color:#292621}tr:last-child td{border-bottom:0}td:last-child,th:last-child{border-right:0}.stock{font-family:'Courier New',monospace;font-size:13px}.bis-spec-cell{white-space:normal;min-width:260px;max-width:360px;line-height:1.5;word-break:normal;overflow-wrap:anywhere}.mfg-cell{white-space:normal;min-width:320px;line-height:1.45}.mrp-cell{font-weight:600}.finish-cell{display:flex;align-items:center;gap:7px}.finish-cell .swatch{width:14px;height:14px}
+  .drop-highlight:after{content:'Drop CSV to load catalogue';position:fixed;inset:14px;z-index:999;display:flex;align-items:center;justify-content:center;border:2px dashed #fff;background:rgba(0,0,0,.8);color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:41.6px}
+
+  @media(max-width:1120px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar{grid-template-columns:1.4fr repeat(2,1fr) auto}.toolbar .watt-main{display:none}.advanced{grid-template-columns:repeat(3,minmax(0,1fr))}.advanced.open{max-height:340px}.detail-wrap{grid-template-columns:1fr}.visual-col{border-right:0;border-bottom:1px solid var(--line)}}
+  @media(max-width:780px){
+  .pagination{display:none!important;}.topbar-inner,.shell{padding-left:16px;padding-right:16px}.hero{grid-template-columns:1fr}.hero-side{text-align:left}.load-row{justify-content:flex-start}.filter-shell{padding-top:10px}.toolbar{grid-template-columns:1fr 1fr;gap:8px}.mobile-product-label{display:block;grid-column:1/-1;order:1;margin:0 0 -2px;font-size:11.7px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4b4640}.toolbar .product-main{display:block;grid-column:1/-1;order:2;height:50px;border:2px solid #111;background:#fff;font-size:16.9px;font-weight:650;padding:0 14px;box-shadow:0 3px 12px rgba(0,0,0,.05)}.toolbar .product-main:focus{border-color:#111;box-shadow:0 0 0 2px rgba(17,17,17,.08)}.toolbar .search{grid-column:1/-1;order:3}.toolbar #cctFilter{order:4}.toolbar .watt-main{display:block;order:5}.toolbar .more-btn{order:6}.more-btn,.reset-btn{width:100%}.advanced{grid-template-columns:repeat(2,minmax(0,1fr))}.advanced.open{max-height:500px}.finish-panel{flex-direction:column;gap:6px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.info-col,.visual-col,.variants{padding:20px}.detail-title{font-size:44.2px}.data-strip{align-items:flex-start;flex-direction:column}.hint{text-align:left}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.mobile-product-label,.toolbar .product-main,.toolbar .search{grid-column:1/-1}.toolbar #cctFilter,.toolbar .watt-main,.toolbar .more-btn{grid-column:1/-1}.toolbar .product-main{height:52px;font-size:18.2px}.advanced{grid-template-columns:1fr}.advanced.open{max-height:900px}.spec-grid{grid-template-columns:1fr}.modal{padding:0}.modal-panel{margin:0;min-height:100vh}.finish-chip{font-size:11.7px}.catalogue-head{align-items:flex-start;flex-direction:column;gap:6px}.catalogue-count{text-align:left}}
+
+  .category-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .category-tab{height:42px;border:1px solid #bdb6ad;background:transparent;color:var(--ink);font-size:14.3px;letter-spacing:.08em;text-transform:uppercase}
+  .category-tab:hover,.category-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  @media(max-width:780px){.category-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.category-tab{height:44px;font-size:13px}}
+
+
+  .card-price{margin:-4px 0 11px;font-size:15.6px;font-weight:700;color:#111;letter-spacing:0}
+  .mobile-shopbar{display:none}
+
+  @media(max-width:780px){
+    body{background:#f6f5f2}
+    .topbar{position:sticky;top:0;z-index:90;box-shadow:0 1px 0 rgba(255,255,255,.08)}
+    .topbar-inner{min-height:54px;padding-left:14px;padding-right:14px}
+    .brand{font-size:18.2px}
+    .top-meta{font-size:10.4px}
+
+    .shell{padding:10px 10px 84px}
+
+    .hero{display:block;padding:12px 2px 14px;border-bottom:0}
+    .eyebrow{margin-bottom:5px;font-size:10.4px}
+    h1{font-size:39px;line-height:1.02}
+    .hero-side{display:none}
+    .data-strip{display:none}
+
+    .category-tabs{
+      position:sticky;
+      top:54px;
+      z-index:80;
+      display:flex;
+      gap:7px;
+      overflow-x:auto;
+      padding:9px 2px;
+      margin:0 -2px;
+      background:rgba(246,245,242,.98);
+      border-bottom:1px solid var(--line);
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+    }
+    .category-tabs::-webkit-scrollbar{display:none}
+    .category-tab{
+      flex:0 0 auto;
+      width:auto;
+      min-width:max-content;
+      height:36px;
+      padding:0 14px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid #d7d2ca;
+      font-size:11.7px;
+      letter-spacing:.07em;
+      box-shadow:0 1px 2px rgba(0,0,0,.03)
+    }
+    .category-tab.active{
+      background:#111;
+      color:#fff;
+      border-color:#111
+    }
+
+    .filter-shell{
+      position:sticky;
+      top:109px;
+      z-index:70;
+      margin:0 -10px 12px;
+      padding:8px 10px 9px;
+      background:rgba(246,245,242,.97);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid #ddd8d0;
+      box-shadow:0 5px 15px rgba(24,21,18,.04)
+    }
+
+    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .mobile-product-label{
+      display:block;
+      grid-column:1/-1;
+      order:1;
+      margin:0;
+      font-size:10.4px;
+      color:#6d675f
+    }
+    .toolbar .product-main{
+      grid-column:1/-1;
+      order:2;
+      height:44px;
+      border:1px solid #bcb6ad;
+      border-radius:8px;
+      background:#fff;
+      font-size:16.9px;
+      font-weight:650;
+      box-shadow:none
+    }
+    .toolbar .search{
+      grid-column:1/-1;
+      order:3;
+      height:44px;
+      border-radius:10px;
+      background:#fff;
+      border:1px solid #d4cec6;
+      padding-left:14px;
+      font-size:15.6px
+    }
+    .toolbar #cctFilter{order:4;height:38px;border-radius:999px;background:#fff}
+    .toolbar .watt-main{display:block;order:5;height:38px;border-radius:999px;background:#fff}
+    .toolbar .more-btn{
+      grid-column:1/-1;
+      order:6;
+      height:38px;
+      border-radius:999px;
+      background:#fff
+    }
+    .advanced{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:7px
+    }
+    .advanced.open{max-height:640px;padding-top:8px}
+    .advanced .field{height:39px;border-radius:8px;background:#fff}
+    .reset-btn{grid-column:1/-1;border-radius:999px}
+
+    .finish-panel{
+      margin:0 -10px;
+      padding:9px 10px 0;
+      display:block
+    }
+    .finish-title{padding:0 0 7px;font-size:10.4px}
+    .finish-chips{
+      display:flex;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      gap:6px;
+      padding-bottom:2px;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch
+    }
+    .finish-chips::-webkit-scrollbar{display:none}
+    .finish-chip{
+      flex:0 0 auto;
+      height:30px;
+      background:#fff;
+      border-color:#ddd7cf
+    }
+
+    .active-filters{
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      padding-top:7px;
+      scrollbar-width:none
+    }
+    .active-filters::-webkit-scrollbar{display:none}
+    .filter-pill{flex:0 0 auto}
+
+    .catalogue-head{
+      align-items:center;
+      flex-direction:row;
+      gap:8px;
+      margin:10px 2px 9px
+    }
+    .catalogue-head h2{
+      font-family:Inter,Arial,sans-serif;
+      font-size:19.5px;
+      font-weight:700
+    }
+    .catalogue-count{
+      margin-left:auto;
+      font-size:10.4px;
+      text-align:right;
+      max-width:55%
+    }
+
+    .grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px
+    }
+    .card{
+      border-radius:12px;
+      border:1px solid #e2ded7;
+      background:#fff;
+      box-shadow:0 2px 8px rgba(23,20,17,.035)
+    }
+    .card:hover{transform:none;box-shadow:0 2px 8px rgba(23,20,17,.035)}
+    .card-image{
+      aspect-ratio:1/1;
+      background:#fff;
+      border-bottom:1px solid #f0ede8
+    }
+    .card-image img{width:86%;height:86%}
+    .card-body{padding:10px 9px 9px}
+    .card-kicker{
+      min-height:0;
+      margin-bottom:5px;
+      font-size:9.1px;
+      letter-spacing:.08em
+    }
+    .card-title{
+      margin:0 0 6px;
+      font-family:Inter,Arial,sans-serif;
+      font-size:16.9px;
+      line-height:1.22;
+      font-weight:700;
+      min-height:32px
+    }
+    .card-price{
+      margin:0 0 8px;
+      font-size:15.6px;
+      font-weight:750
+    }
+
+    .spec-row{
+      grid-template-columns:1fr 1fr;
+      border-top:1px solid #f0ede8
+    }
+    .mini-spec{padding-top:7px}
+    .mini-spec:nth-child(n+3){display:none}
+    .mini-label{font-size:9.1px}
+    .mini-value{font-size:11.7px}
+    .mini-spec:nth-child(even){padding-left:7px}
+
+    .finish-gallery-card .finish-name{
+      margin-bottom:7px;
+      font-size:11.7px
+    }
+    .finish-gallery-card .finish-name .swatch{width:14px;height:14px}
+
+    .card-finishes{
+      margin-top:7px;
+      padding-top:7px;
+      gap:3px;
+      overflow:hidden
+    }
+    .card-finish-label{display:none}
+    .card-swatch{width:17px;height:17px;padding:1px;flex:0 0 auto}
+    .card-swatch .swatch{width:12px;height:12px}
+    .card-foot{
+      margin-top:7px;
+      padding-top:7px;
+      font-size:9.1px;
+      letter-spacing:.04em
+    }
+    .card-foot span:first-child{display:none}
+    .card-foot span:last-child{margin-left:auto;color:#111;font-weight:700}
+
+    .match-tag{
+      top:7px;
+      right:7px;
+      padding:4px 6px;
+      font-size:9.1px
+    }
+
+    .pagination{
+      position:sticky;
+      bottom:8px;
+      z-index:50;
+      width:max-content;
+      max-width:100%;
+      margin:18px auto 0;
+      padding:5px;
+      border-radius:999px;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 8px 28px rgba(20,18,15,.12)
+    }
+    .pagination .btn{padding:8px 12px}
+    .page-info{min-width:96px}
+
+    .footer{display:none}
+
+    .modal{padding:0}
+    .modal-panel{margin:0;min-height:100vh;width:100%}
+    .modal-top{
+      position:sticky;
+      top:0;
+      z-index:5;
+      min-height:56px;
+      background:#fff
+    }
+    .detail-wrap{grid-template-columns:1fr}
+    .visual-col,.info-col,.variants{padding:16px}
+    .main-image{border-radius:12px}
+    .detail-title{font-size:36.4px}
+    .spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .spec-cell{min-height:62px;padding:10px}
+    .table-wrap{border-radius:10px}
+  }
+
+  @media(max-width:520px){
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+    .toolbar{grid-template-columns:1fr 1fr}
+    .toolbar #cctFilter,.toolbar .watt-main{grid-column:auto}
+    .toolbar .more-btn{grid-column:1/-1}
+    .advanced{grid-template-columns:1fr 1fr}
+    .spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card-title{font-size:15.6px;min-height:30px}
+    .card-price{font-size:14.3px}
+    .card-body{padding:9px 8px 8px}
+    .finish-chip{font-size:10.4px}
+  }
+
+
+/* =========================================================
+   KEUS MOBILE COMMERCE UX — reference-inspired, KEUS palette
+   ========================================================= */
+:root{
+  --keus-gold:#5b524a;
+  --keus-gold-dark:#403a35;
+  --keus-gold-soft:#c6beb6;
+  --keus-cream:#f6f2ec;
+  --keus-paper:#fffdfa;
+  --keus-ink:#0c0c0c;
+  --keus-grey:#706a62;
+}
+
+.header-search-btn{
+  width:32px;height:32px;border:0;background:transparent;color:#fff;
+  display:flex;align-items:center;justify-content:center;padding:0;
+}
+.header-search-icon{
+  width:15px;height:15px;border:1.5px solid currentColor;border-radius:50%;
+  position:relative;display:block;
+}
+.header-search-icon:after{
+  content:"";position:absolute;width:6px;height:1.5px;background:currentColor;
+  right:-5px;bottom:-2px;transform:rotate(48deg);transform-origin:left center;border-radius:2px;
+}
+.top-meta{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-left:auto;text-align:right}
+.top-meta i{width:3px;height:3px;border-radius:50%;background:var(--keus-gold);display:block}
+.top-meta span:first-child{color:var(--keus-gold-soft)}
+
+.category-tab{display:flex;align-items:center;justify-content:center;gap:8px}
+.cat-icon{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.cat-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+.view-detail-cta b{font-size:16.9px;font-weight:500}
+.card-price{color:var(--keus-gold-dark)}
+
+@media(max-width:780px){
+  body{background:var(--keus-cream);color:var(--keus-ink)}
+
+  /* HEADER */
+  .topbar{
+    position:sticky;top:0;z-index:100;
+    background:#090909;
+    box-shadow:0 1px 0 rgba(255,255,255,.07);
+  }
+  .topbar-inner{
+    min-height:64px;
+    max-width:none;
+    padding:0 16px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:14px;
+  }
+  .brand{
+    position:relative;
+    font-size:23.4px;
+    letter-spacing:.42em;
+    line-height:1;
+    padding-right:0;
+  }
+  .brand:after{content:none!important}
+  .top-meta{
+    justify-self:end;
+    font-size:11.7px;
+    letter-spacing:.12em;
+    white-space:nowrap;
+  }
+  .header-search-btn{justify-self:end}
+
+  /* remove desktop hero on mobile — header + category bar carries context */
+  .shell{padding:0 12px 78px}
+  .hero,.data-strip{display:none!important}
+
+  /* CATEGORY NAV */
+  .category-tabs{
+    position:sticky;
+    top:64px;
+    z-index:88;
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:8px;
+    overflow-x:auto;
+    margin:0 -12px;
+    padding:14px 12px 12px;
+    background:rgba(246,242,236,.98);
+    border-bottom:0;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .category-tabs::-webkit-scrollbar{display:none}
+  .category-tab{
+    flex:0 0 auto;
+    min-width:max-content;
+    height:46px!important;
+    padding:0 15px;
+    border:1px solid #ddd6cb;
+    border-radius:999px;
+    background:#fff;
+    color:#171512;
+    font-size:13px!important;
+    font-weight:650;
+    letter-spacing:.035em;
+    text-transform:uppercase;
+    box-shadow:0 3px 10px rgba(26,20,14,.035);
+  }
+  .category-tab:hover{background:#fff;color:#171512;border-color:#cfc5b7}
+  .category-tab.active,
+  .category-tab.active:hover{
+    background:var(--keus-gold);
+    color:#fff;
+    border-color:var(--keus-gold);
+    box-shadow:0 5px 14px rgba(91,82,74,.20);
+  }
+  .cat-icon{width:19px;height:19px}
+
+  /* FILTER AREA — e-commerce hierarchy */
+  .filter-shell{
+    position:relative!important;
+    top:auto!important;
+    z-index:30;
+    margin:0 -12px 12px;
+    padding:8px 12px 12px!important;
+    background:var(--keus-cream)!important;
+    border-bottom:1px solid #dfd8ce;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+  .toolbar{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+
+  /* Search comes first */
+  .toolbar .search{
+    grid-column:1/-1!important;
+    order:1!important;
+    height:50px!important;
+    padding:0 42px 0 42px!important;
+    border:1px solid #d8d1c7!important;
+    border-radius:999px!important;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23181818' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m16.2 16.2 4.2 4.2'/%3E%3C/svg%3E")
+      no-repeat 15px center / 20px,
+      #fff!important;
+    font-size:15.6px!important;
+    box-shadow:0 2px 7px rgba(25,20,14,.025)!important;
+  }
+  .toolbar .search::placeholder{color:#969088}
+
+  /* Product selector retained, but made compact and useful */
+  .mobile-product-label{display:none!important}
+  .toolbar .product-main{
+    display:block!important;
+    grid-column:1/-1!important;
+    order:2!important;
+    height:42px!important;
+    border:1px solid #d8d1c7!important;
+    border-radius:10px!important;
+    background:#fff!important;
+    font-size:14.3px!important;
+    font-weight:650!important;
+    padding:0 12px!important;
+    box-shadow:none!important;
+  }
+
+  /* CCT / Wattage / More Filters = 3 e-commerce chips */
+  .toolbar #cctFilter{
+    grid-column:1/3!important;
+    order:3!important;
+  }
+  .toolbar .watt-main{
+    display:block!important;
+    grid-column:3/5!important;
+    order:4!important;
+  }
+  .toolbar .more-btn{
+    grid-column:5/7!important;
+    order:5!important;
+  }
+  .toolbar #cctFilter,
+  .toolbar .watt-main,
+  .toolbar .more-btn{
+    height:42px!important;
+    min-width:0;
+    border:1px solid #d8d1c7!important;
+    border-radius:999px!important;
+    background:#fff!important;
+    color:#1b1916!important;
+    padding-left:11px!important;
+    padding-right:10px!important;
+    font-size:13px!important;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .toolbar .more-btn:before{
+    content:"";
+    display:inline-block;
+    width:13px;height:13px;
+    margin-right:5px;
+    vertical-align:-2px;
+    background:
+      linear-gradient(#171717,#171717) 0 2px/13px 1px no-repeat,
+      linear-gradient(#171717,#171717) 0 6px/13px 1px no-repeat,
+      linear-gradient(#171717,#171717) 0 10px/13px 1px no-repeat;
+  }
+
+  /* Advanced filters */
+  .advanced{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  .advanced.open{max-height:760px!important;padding-top:9px!important}
+  .advanced .field{
+    height:40px!important;
+    border:1px solid #d8d1c7!important;
+    border-radius:8px!important;
+    background:#fff!important;
+    font-size:13px!important;
+  }
+  .reset-btn{
+    grid-column:1/-1!important;
+    height:40px!important;
+    border-radius:999px!important;
+    border-color:#171717!important;
+  }
+
+  /* FINISH STRIP */
+  .finish-panel{
+    display:block!important;
+    margin:11px 0 0!important;
+    padding:11px 0 0!important;
+    border-top:1px solid #d8d1c7;
+  }
+  .finish-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 0 9px!important;
+    font-size:11.7px!important;
+    font-weight:700;
+    letter-spacing:.13em;
+    color:#4b4640;
+  }
+  .finish-title:after{
+    content:"";
+    height:1px;flex:1;background:#ddd6cc;
+  }
+  .finish-chips{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    gap:7px!important;
+    padding:0 0 2px!important;
+    scrollbar-width:none;
+  }
+  .finish-chips::-webkit-scrollbar{display:none}
+  .finish-chip{
+    flex:0 0 auto!important;
+    height:38px!important;
+    padding:0 12px 0 7px!important;
+    border:1px solid #ddd6cb!important;
+    border-radius:999px!important;
+    background:#fff!important;
+    color:#2c2823!important;
+    font-size:11.7px!important;
+  }
+  .finish-chip .swatch{width:23px;height:23px}
+  .finish-chip.active{
+    border-color:var(--keus-gold)!important;
+    box-shadow:inset 0 0 0 1px var(--keus-gold)!important;
+    color:#111!important;
+  }
+
+  .active-filters{
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    padding-top:8px!important;
+    scrollbar-width:none;
+  }
+  .active-filters::-webkit-scrollbar{display:none}
+  .filter-pill{flex:0 0 auto}
+
+  /* COLLECTION TITLE */
+  .catalogue-head{
+    flex-direction:row!important;
+    align-items:center!important;
+    margin:13px 2px 10px!important;
+    gap:8px!important;
+  }
+  .catalogue-head h2{
+    margin:0;
+    font-family:Inter,Arial,sans-serif!important;
+    font-size:19.5px!important;
+    font-weight:750!important;
+    letter-spacing:-.01em;
+  }
+  .catalogue-count{
+    margin-left:auto;
+    max-width:58%;
+    text-align:right!important;
+    font-size:9.1px!important;
+    line-height:1.3;
+  }
+
+  /* PRODUCT GRID */
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .card{
+    border:1px solid #e2ddd5!important;
+    border-radius:13px!important;
+    background:var(--keus-paper)!important;
+    box-shadow:0 3px 12px rgba(25,20,14,.045)!important;
+    overflow:hidden;
+  }
+  .card:hover{
+    transform:none!important;
+    box-shadow:0 3px 12px rgba(25,20,14,.045)!important;
+  }
+  .card-image{
+    aspect-ratio:1/1!important;
+    background:#fff!important;
+    border-bottom:1px solid #f0ece6!important;
+  }
+  .card-image img{
+    width:88%!important;
+    height:88%!important;
+    object-fit:contain;
+  }
+  .card-body{padding:10px 9px 9px!important}
+  .card-kicker{
+    min-height:0!important;
+    margin-bottom:5px!important;
+    color:#7d766d!important;
+    font-size:9.1px!important;
+    letter-spacing:.08em!important;
+  }
+  .card-title{
+    min-height:31px!important;
+    margin:0 0 5px!important;
+    font-family:Inter,Arial,sans-serif!important;
+    font-size:16.25px!important;
+    font-weight:750!important;
+    line-height:1.2!important;
+    letter-spacing:-.015em;
+  }
+  .card-price{
+    margin:0 0 8px!important;
+    color:var(--keus-gold-dark)!important;
+    font-size:14.3px!important;
+    font-weight:800!important;
+    line-height:1.25;
+  }
+
+  /* only Wattage + CCT shown on mobile card */
+  .spec-row{
+    grid-template-columns:1fr 1fr!important;
+    border-top:1px solid #eee9e2!important;
+  }
+  .mini-spec{padding-top:8px!important}
+  .mini-spec:nth-child(n+3){display:none!important}
+  .mini-spec:nth-child(even){
+    padding-left:8px!important;
+    border-left:1px solid #eee9e2!important;
+  }
+  .mini-label{
+    margin-bottom:4px!important;
+    font-size:8.45px!important;
+    letter-spacing:.11em!important;
+  }
+  .mini-value{
+    font-size:11.7px!important;
+    line-height:1.2!important;
+  }
+
+  .finish-gallery-card .finish-name{
+    margin:0 0 7px!important;
+    font-size:11.7px!important;
+  }
+  .finish-gallery-card .finish-name .swatch{width:14px;height:14px}
+
+  /* bottom swatches + View Details */
+  .card-finishes{
+    display:flex!important;
+    align-items:center!important;
+    min-height:27px!important;
+    margin:6px 0 0!important;
+    padding-top:7px!important;
+    gap:3px!important;
+    border-top:1px solid #eee9e2!important;
+    overflow:hidden!important;
+  }
+  .card-finish-label{display:none!important}
+  .card-swatch{
+    width:17px!important;height:17px!important;padding:1px!important;
+    flex:0 0 auto!important;
+  }
+  .card-swatch .swatch{width:12px!important;height:12px!important}
+  .more-finishes{
+    margin-left:2px!important;
+    font-size:9.1px!important;
+    color:#777067!important;
+  }
+
+  .card-foot{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    margin:7px 0 0!important;
+    padding-top:7px!important;
+    border-top:1px solid #eee9e2!important;
+  }
+  .card-foot>span:first-child{display:none!important}
+  .view-detail-cta,
+  .card-foot>span:last-child{
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:5px!important;
+    margin-left:auto!important;
+    min-height:28px;
+    padding:0 9px;
+    border:1px solid var(--keus-gold)!important;
+    border-radius:999px;
+    color:var(--keus-gold-dark)!important;
+    font-size:9.1px!important;
+    font-weight:750!important;
+    letter-spacing:.04em!important;
+    text-transform:none!important;
+  }
+
+  .match-tag{
+    top:7px!important;right:7px!important;
+    background:#111!important;
+    border-radius:999px!important;
+    padding:4px 6px!important;
+    font-size:8.45px!important;
+  }
+
+  /* PRODUCT DETAIL = full mobile product page */
+  .modal{padding:0!important;background:#fff!important}
+  .modal-panel{margin:0!important;min-height:100vh!important;width:100%!important;background:var(--keus-paper)!important}
+  .modal-top{
+    position:sticky;top:0;z-index:8;
+    min-height:58px!important;
+    padding:0 16px!important;
+    background:#0b0b0b!important;
+    color:#fff;
+    border-bottom:0!important;
+  }
+  .modal-brand{letter-spacing:.3em}
+  .close-btn{
+    color:#fff!important;border-color:#555!important;
+  }
+  .close-btn:hover{background:#fff!important;color:#111!important}
+  .detail-wrap{grid-template-columns:1fr!important}
+  .visual-col,.info-col,.variants{padding:16px!important}
+  .main-image{
+    border:1px solid #eee8df!important;
+    border-radius:12px!important;
+    overflow:hidden;
+    background:#fff!important;
+  }
+  .detail-title{
+    font-family:Inter,Arial,sans-serif!important;
+    font-size:35.1px!important;
+    font-weight:750!important;
+    letter-spacing:-.025em;
+  }
+  .detail-kicker{font-size:10.4px!important}
+  .spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .spec-cell{min-height:63px!important;padding:10px!important}
+  .table-wrap{border-radius:10px!important}
+
+  .pagination{
+    width:max-content!important;
+    max-width:100%;
+    margin:18px auto 0!important;
+    padding:5px!important;
+    background:#fff!important;
+    border-radius:999px!important;
+    box-shadow:0 7px 26px rgba(25,20,14,.10)!important;
+  }
+  .footer{display:none!important}
+}
+
+@media(max-width:390px){
+  .shell{padding-left:9px;padding-right:9px}
+  .category-tabs{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
+  .filter-shell{margin-left:-9px;margin-right:-9px;padding-left:9px!important;padding-right:9px!important}
+  .category-tab{height:43px!important;padding:0 12px;font-size:11.7px!important}
+  .cat-icon{width:17px;height:17px}
+  .toolbar #cctFilter,.toolbar .watt-main,.toolbar .more-btn{font-size:11.7px!important}
+  .grid{gap:7px!important}
+  .card-title{font-size:14.95px!important}
+  .card-price{font-size:13.65px!important}
+}
+
+
+/* =========================================================
+   PROFILE CATEGORY — only Name / Stock Code / Cutout /
+   New Description / Image
+   ========================================================= */
+body.profiles-mode .finish-panel,
+body.profiles-mode #cctFilter,
+body.profiles-mode .watt-main{
+  display:none!important;
+}
+body.profiles-mode #itemNoFilter,
+body.profiles-mode #vfFilter,
+body.profiles-mode #imaxFilter,
+body.profiles-mode #criFilter,
+body.profiles-mode #beamFilter,
+body.profiles-mode #batchCodeFilter,
+body.profiles-mode #bisNoFilter,
+body.profiles-mode #bisSpecFilter,
+body.profiles-mode #mrpFilter,
+body.profiles-mode #mfgByFilter{
+  display:none!important;
+}
+body.profiles-mode .advanced{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.profiles-mode .toolbar{
+  grid-template-columns:minmax(260px,1.55fr) minmax(180px,.8fr) auto!important;
+}
+body.profiles-mode .profile-card .card-title{
+  min-height:auto;
+}
+.profile-card .profile-description{
+  margin:10px 0 0;
+  padding-top:10px;
+  border-top:1px solid var(--line2);
+  color:#5f5952;
+  font-size:13px;
+  line-height:1.45;
+}
+.profile-card .profile-specs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--line2);
+  margin-top:10px;
+}
+.profile-card .profile-spec{
+  padding-top:9px;
+}
+.profile-card .profile-spec+ .profile-spec{
+  border-left:1px solid var(--line2);
+  padding-left:10px;
+}
+.profile-card .profile-spec-label{
+  margin-bottom:4px;
+  color:#999188;
+  font-size:10.4px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.profile-card .profile-spec-value{
+  color:#2d2925;
+  font-size:13px;
+  line-height:1.35;
+}
+.profile-card .profile-details-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:32px;
+  padding:0 12px;
+  border:1px solid var(--keus-gold,#5b524a);
+  border-radius:999px;
+  background:transparent;
+  color:var(--keus-gold-dark,#403a35);
+  font-size:11.7px;
+  font-weight:700;
+}
+@media(max-width:780px){
+  body.profiles-mode .toolbar{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.profiles-mode .toolbar .search{
+    grid-column:1/-1!important;
+    order:1!important;
+  }
+  body.profiles-mode .toolbar .product-main{
+    grid-column:1/-1!important;
+    order:2!important;
+  }
+  body.profiles-mode .toolbar .more-btn{
+    grid-column:1/-1!important;
+    order:3!important;
+  }
+  body.profiles-mode .advanced{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .profile-card .profile-description{
+    font-size:11.7px;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .profile-card .profile-spec-label{font-size:8.45px}
+  .profile-card .profile-spec-value{font-size:11.05px}
+  .profile-card .profile-details-btn{
+    width:100%;
+    min-height:30px;
+    font-size:10.4px;
+  }
+}
+
+
+/* =========================================================
+   KEUS TAUPE UI — #5b524a ACCENT ONLY
+   Product finish colours remain unchanged.
+   ========================================================= */
+.native-product-select{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important}
+.keus-product-select{position:relative;min-width:0;z-index:91}
+.keus-product-trigger{width:100%;height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;border:1px solid #c6beb6;border-radius:12px;background:#fbfaf7;color:#070404;font-size:14.3px;font-weight:700;text-align:left;box-shadow:0 3px 12px rgba(7,4,4,.035)}
+.keus-product-trigger:hover,.keus-product-select.open .keus-product-trigger{border-color:#5b524a;background:#fff}
+.keus-product-chevron{width:8px;height:8px;border-right:1.5px solid #5b524a;border-bottom:1.5px solid #5b524a;transform:rotate(45deg) translateY(-2px);transition:transform .18s ease;flex:0 0 auto}
+.keus-product-select.open .keus-product-chevron{transform:rotate(225deg) translate(-1px,-1px)}
+.keus-product-menu{position:absolute;left:0;right:0;top:calc(100% + 7px);max-height:min(480px,65vh);overflow-y:auto;background:#fbfaf7;border:1px solid #c6beb6;border-radius:16px;box-shadow:0 22px 55px rgba(7,4,4,.18);padding:6px;z-index:999;scrollbar-width:thin;scrollbar-color:#5b524a #eeeae5}
+.keus-product-option{width:100%;min-height:46px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:0;border-bottom:1px solid #e8e3de;border-radius:9px;background:transparent;color:#070404;font-size:15.6px;font-weight:500;text-align:left}
+.keus-product-option:last-child{border-bottom:0}
+.keus-product-option:hover{background:#eeeae5;color:#070404}
+.keus-product-option.active{background:#5b524a;color:#fff;font-weight:700}
+.keus-product-option i{width:18px;height:18px;border:1.5px solid #5b524a;border-radius:50%;position:relative;flex:0 0 auto}
+.keus-product-option.active i{border-color:#fff}
+.keus-product-option.active i:after{content:"";position:absolute;inset:4px;border-radius:50%;background:#fff}
+.series-variant-badge{position:absolute;top:8px;right:8px;z-index:4;padding:5px 8px;border-radius:999px;background:rgba(91,82,74,.92);color:#fff;font-size:9.1px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 3px 10px rgba(7,4,4,.10);pointer-events:none}
+.match-tag{left:8px!important;right:auto!important;background:rgba(7,4,4,.84)!important}
+
+/* UI accent replacements using the KEUS taupe family */
+.product-main,.toolbar .product-main{border-color:#c6beb6!important}
+.mobile-product-label{color:#5b524a!important}
+.card-price{color:#403a35!important}
+.view-detail-cta,.profile-details-btn{border-color:#5b524a!important;color:#403a35!important}
+.category-tab.active,.category-tab.active:hover{background:#5b524a!important;border-color:#5b524a!important;box-shadow:0 4px 12px rgba(91,82,74,.18)!important}
+.finish-chip.active{border-color:#5b524a!important;box-shadow:inset 0 0 0 1px #5b524a!important}
+.card-swatch.active{border-color:#5b524a!important;box-shadow:0 0 0 1px rgba(91,82,74,.18)!important}
+.brand:after{background:#5b524a!important}
+.top-meta i{background:#5b524a!important}
+.top-meta span:first-child{color:#c6beb6!important}
+
+@media(max-width:780px){
+  .keus-product-select{grid-column:1/-1!important;order:2!important}
+  .keus-product-trigger{height:36px;border-radius:11px;padding:0 12px;font-size:11.7px;background:#fbfaf7}
+  .keus-product-menu{position:fixed;left:12px;right:12px;top:90px;max-height:72vh;border-radius:18px;padding:6px;background:#fbfaf7;box-shadow:0 28px 70px rgba(7,4,4,.28)}
+  .keus-product-option{min-height:43px;padding:0 11px;font-size:14.3px;border-radius:9px}
+  .keus-product-option i{width:17px;height:17px}
+  .series-variant-badge{top:6px;right:6px;padding:4px 6px;font-size:7.8px}
+  .match-tag{top:6px!important;left:6px!important}
+}
+
+
+/* =========================================================
+   COMPACT MOBILE REFINEMENTS
+   ========================================================= */
+.card-finishes{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  flex-wrap:nowrap!important;
+  scrollbar-width:thin;
+  -webkit-overflow-scrolling:touch;
+}
+.card-finishes::-webkit-scrollbar{height:4px}
+.card-finishes::-webkit-scrollbar-thumb{background:#c6beb6;border-radius:999px}
+.card-swatch{flex:0 0 auto!important}
+.more-finishes{display:none!important}
+
+@media(max-width:780px){
+  .category-tabs{
+    gap:5px!important;
+    padding:9px 10px 8px!important;
+  }
+  .category-tab{
+    height:34px!important;
+    padding:0 10px!important;
+    gap:5px!important;
+    border-radius:999px!important;
+    font-size:10.4px!important;
+    font-weight:650!important;
+    letter-spacing:.025em!important;
+    box-shadow:0 2px 7px rgba(26,20,14,.025)!important;
+  }
+  .category-tab .cat-icon{
+    width:14px!important;
+    height:14px!important;
+  }
+
+  .finish-panel{
+    margin:7px 0 0!important;
+    padding:7px 0 0!important;
+  }
+  .finish-title{
+    gap:7px!important;
+    padding:0 0 6px!important;
+    font-size:9.1px!important;
+    letter-spacing:.10em!important;
+  }
+  .finish-chips{
+    gap:5px!important;
+  }
+  .finish-chip{
+    height:29px!important;
+    padding:0 9px 0 5px!important;
+    gap:5px!important;
+    font-size:9.75px!important;
+  }
+  .finish-chip .swatch{
+    width:17px!important;
+    height:17px!important;
+  }
+
+  .card-image{
+    touch-action:pan-y;
+  }
+  .card-finishes{
+    min-height:21px!important;
+    margin-top:5px!important;
+    padding-top:5px!important;
+    gap:2px!important;
+    scrollbar-width:none!important;
+  }
+  .card-finishes::-webkit-scrollbar{display:none!important}
+  .card-swatch{
+    width:14px!important;
+    height:14px!important;
+    padding:1px!important;
+    border-width:1px!important;
+  }
+  .card-swatch .swatch{
+    width:9px!important;
+    height:9px!important;
+  }
+  .card-swatch.active{
+    border-color:#5b524a!important;
+    box-shadow:0 0 0 1px rgba(91,82,74,.20)!important;
+  }
+}
+
+@media(max-width:390px){
+  .category-tabs{
+    gap:4px!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  .category-tab{
+    height:32px!important;
+    padding:0 8px!important;
+    font-size:9.75px!important;
+  }
+  .category-tab .cat-icon{
+    width:13px!important;
+    height:13px!important;
+  }
+  .finish-chip{
+    height:27px!important;
+    padding-right:8px!important;
+    font-size:9.1px!important;
+  }
+  .finish-chip .swatch{
+    width:15px!important;
+    height:15px!important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE PRODUCT FINISH DOTS — SHOW ALL
+   ========================================================= */
+@media(max-width:780px){
+  .card-finishes{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+    overflow:visible!important;
+    min-height:18px!important;
+    margin-top:5px!important;
+    padding-top:5px!important;
+    gap:2px!important;
+  }
+  .card-swatch{
+    flex:0 0 12px!important;
+    width:12px!important;
+    height:12px!important;
+    padding:1px!important;
+    border:1px solid transparent!important;
+    border-radius:50%!important;
+  }
+  .card-swatch .swatch{
+    width:8px!important;
+    height:8px!important;
+  }
+  .card-swatch.active{
+    border-color:#5b524a!important;
+    box-shadow:0 0 0 1px rgba(91,82,74,.24)!important;
+    transform:scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   PROFILES ONLY — colour/body + diffuser variations
+   Values are read from "New Description".
+   ========================================================= */
+body.profiles-mode .profile-variation-area{
+  border-top:1px solid var(--line2);
+  margin-top:0;
+  padding-top:8px!important;
+}
+body.profiles-mode .profile-variation-label{
+  margin-bottom:6px;
+  font-size:9.1px;
+  font-weight:700;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:#8a8178;
+}
+body.profiles-mode .profile-variation-dots{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+body.profiles-mode .profile-variation-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  height:25px;
+  padding:0 6px 0 4px;
+  border:1px solid #d8d1c8;
+  border-radius:999px;
+  background:#fff;
+  color:#5b524a;
+  font-size:9.1px;
+  font-weight:750;
+  letter-spacing:.03em;
+}
+body.profiles-mode .profile-variation-btn.active{
+  border-color:#5b524a;
+  box-shadow:inset 0 0 0 1px #5b524a;
+}
+.profile-variation-dot{
+  width:14px;
+  height:14px;
+  border:1px solid rgba(7,4,4,.18);
+  border-radius:50%;
+  flex:0 0 auto;
+  background:#ddd;
+}
+.pv-white{background:#f7f6f1}
+.pv-grey-white{background:linear-gradient(90deg,#8f8b85 0 50%,#f7f6f1 50%)}
+.pv-champagne-white{background:linear-gradient(90deg,#b9a589 0 50%,#f7f6f1 50%)}
+.pv-black-white{background:linear-gradient(90deg,#070404 0 50%,#f7f6f1 50%)}
+.pv-iron-white{background:linear-gradient(90deg,#5f605f 0 50%,#f7f6f1 50%)}
+.pv-white-white{background:#f7f6f1;box-shadow:inset 0 0 0 2px #e3dfd8}
+.pv-black-black{background:#070404}
+.pv-white-black{background:linear-gradient(90deg,#f7f6f1 0 50%,#070404 50%)}
+.pv-white-transparent{
+  background:
+    linear-gradient(90deg,#f7f6f1 0 50%,transparent 50%),
+    repeating-conic-gradient(#d9d6d0 0 25%,#fff 0 50%) 50%/5px 5px;
+}
+.pv-black-transparent{
+  background:
+    linear-gradient(90deg,#070404 0 50%,transparent 50%),
+    repeating-conic-gradient(#d9d6d0 0 25%,#fff 0 50%) 50%/5px 5px;
+}
+.pv-black{background:#070404}
+.pv-standard{background:#c6beb6}
+
+@media(max-width:780px){
+  body.profiles-mode .profile-variation-area{
+    padding-top:6px!important;
+  }
+  body.profiles-mode .profile-variation-label{
+    margin-bottom:4px;
+    font-size:7.8px;
+  }
+  body.profiles-mode .profile-variation-dots{
+    gap:3px;
+  }
+  body.profiles-mode .profile-variation-btn{
+    height:21px;
+    padding:0 4px 0 3px;
+    gap:3px;
+    font-size:7.8px;
+  }
+  body.profiles-mode .profile-variation-dot{
+    width:11px;
+    height:11px;
+  }
+}
+
+
+/* =========================================================
+   PROFILE PAGE ONLY — exact Stock Code + Description images
+   ========================================================= */
+body.profiles-mode .profile-exact-selector{
+  border-top:1px solid var(--line2);
+  padding-top:8px!important;
+}
+body.profiles-mode .profile-selector-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:7px;
+  color:#7d746b;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body.profiles-mode .profile-row-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+body.profiles-mode .profile-row-option{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:27px;
+  padding:3px 7px 3px 4px;
+  border:1px solid #d7d0c6;
+  border-radius:999px;
+  background:#fff;
+  color:#5b524a;
+  font-size:7px;
+  font-weight:700;
+}
+body.profiles-mode .profile-row-option.active{
+  border-color:#5b524a;
+  box-shadow:inset 0 0 0 1px #5b524a;
+}
+body.profiles-mode .profile-row-option .profile-variation-dot{
+  width:13px;
+  height:13px;
+}
+body.profiles-mode .profile-image-unavailable{
+  color:#8f877e;
+  font-size:10px;
+  font-weight:600;
+}
+@media(max-width:780px){
+  body.profiles-mode .profile-row-options{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding-bottom:3px;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.profiles-mode .profile-row-options::-webkit-scrollbar{display:none}
+  body.profiles-mode .profile-row-option{
+    flex:0 0 auto;
+    min-height:23px;
+    padding:2px 5px 2px 3px;
+    gap:3px;
+    font-size:6px;
+  }
+  body.profiles-mode .profile-row-option .profile-variation-dot{
+    width:11px;
+    height:11px;
+  }
+  body.profiles-mode .exact-profile-card .card-image{
+    touch-action:pan-y;
+  }
+}
+
+
+/* =========================================================
+   PROFILES ONLY — DESKTOP / WEB REFINEMENT
+   Mobile rules and all other categories are untouched.
+   ========================================================= */
+@media(min-width:781px){
+  body.profiles-mode .catalogue-head{
+    margin-top:18px;
+    margin-bottom:18px;
+    align-items:center;
+  }
+
+  body.profiles-mode .grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:20px;
+  }
+
+  body.profiles-mode .exact-profile-card{
+    border-radius:18px;
+    border:1px solid #ddd7cf;
+    background:#fffdfa;
+    box-shadow:0 7px 24px rgba(7,4,4,.045);
+    overflow:hidden;
+  }
+
+  body.profiles-mode .exact-profile-card:hover{
+    transform:translateY(-3px);
+    border-color:#c6beb6;
+    box-shadow:0 16px 36px rgba(7,4,4,.075);
+  }
+
+  body.profiles-mode .exact-profile-card .card-image{
+    aspect-ratio:1.42/1;
+    min-height:250px;
+    background:
+      radial-gradient(circle at 50% 42%,#fff 0 40%,#faf8f4 74%,#f4f0ea 100%);
+    border-bottom:1px solid #ece7e0;
+  }
+
+  body.profiles-mode .exact-profile-card .card-image img{
+    width:82%;
+    height:82%;
+    object-fit:contain;
+  }
+
+  body.profiles-mode .exact-profile-card .card-body{
+    padding-left:18px;
+    padding-right:18px;
+  }
+
+  body.profiles-mode .exact-profile-card .card-kicker{
+    margin-top:2px;
+    margin-bottom:7px;
+    color:#8b837a;
+  }
+
+  body.profiles-mode .exact-profile-card .card-title{
+    margin-bottom:12px;
+    min-height:auto;
+    font-size:20px;
+    line-height:1.18;
+    letter-spacing:-.015em;
+  }
+
+  body.profiles-mode .exact-profile-card .profile-specs{
+    margin-top:0;
+    border-top:1px solid #ece7e0;
+  }
+
+  body.profiles-mode .exact-profile-card .profile-spec{
+    padding-top:11px;
+    padding-bottom:2px;
+  }
+
+  body.profiles-mode .exact-profile-card .profile-description{
+    margin-top:12px;
+    min-height:44px;
+    color:#6f675f;
+    line-height:1.55;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  body.profiles-mode .profile-exact-selector{
+    margin-top:14px;
+    padding:13px 18px 14px!important;
+    background:#f5f1ec;
+    border-top:1px solid #e4ddd5;
+    border-bottom:1px solid #e4ddd5;
+  }
+
+  body.profiles-mode .profile-selector-head{
+    margin-bottom:9px;
+    font-size:9px;
+    letter-spacing:.10em;
+  }
+
+  body.profiles-mode .profile-row-options{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+
+  body.profiles-mode .profile-row-option{
+    width:100%;
+    min-height:36px;
+    justify-content:flex-start;
+    padding:5px 9px 5px 6px;
+    border-radius:10px;
+    border:1px solid #d8d1c8;
+    background:#fff;
+    font-size:8px;
+    line-height:1.15;
+    transition:border-color .16s ease,background .16s ease,box-shadow .16s ease;
+  }
+
+  body.profiles-mode .profile-row-option:hover{
+    border-color:#9f958d;
+    background:#fbfaf7;
+  }
+
+  body.profiles-mode .profile-row-option.active{
+    border-color:#5b524a;
+    background:#fff;
+    box-shadow:inset 0 0 0 1px #5b524a,0 3px 10px rgba(91,82,74,.08);
+  }
+
+  body.profiles-mode .profile-row-option .profile-variation-dot{
+    width:16px;
+    height:16px;
+  }
+
+  body.profiles-mode .exact-profile-card .card-foot{
+    margin-top:0;
+    padding:13px 0 2px;
+    border-top:0;
+  }
+
+  body.profiles-mode .exact-profile-card .profile-details-btn{
+    width:100%;
+    min-height:38px;
+    border-radius:10px;
+    background:#5b524a;
+    color:#fff!important;
+    border-color:#5b524a!important;
+    font-size:10px;
+    letter-spacing:.035em;
+  }
+
+  body.profiles-mode .exact-profile-card .profile-details-btn:hover{
+    background:#403a35;
+    border-color:#403a35!important;
+  }
+
+  body.profiles-mode .series-variant-badge{
+    top:12px;
+    right:12px;
+    padding:6px 9px;
+    font-size:8px;
+  }
+}
+
+
+/* =========================================================
+   WEB/DESKTOP — COLOUR CHANGE CONTROLS FOR LIGHTING CARDS
+   Profiles retain their separate profile-variant UI.
+   ========================================================= */
+.desktop-finish-nav{display:none}
+
+@media(min-width:781px){
+  body:not(.profiles-mode) .card{
+    position:relative;
+  }
+
+  body:not(.profiles-mode) .desktop-finish-nav{
+    position:absolute;
+    top:116px;
+    z-index:8;
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(91,82,74,.22);
+    border-radius:50%;
+    background:rgba(255,253,250,.90);
+    color:#403a35;
+    font-family:Arial,sans-serif;
+    font-size:25px;
+    font-weight:300;
+    line-height:1;
+    opacity:0;
+    transform:translateY(-50%) scale(.94);
+    transition:opacity .16s ease,transform .16s ease,background .16s ease,border-color .16s ease;
+    box-shadow:0 4px 15px rgba(7,4,4,.08);
+    backdrop-filter:blur(6px);
+  }
+
+  body:not(.profiles-mode) .desktop-finish-prev{left:10px}
+  body:not(.profiles-mode) .desktop-finish-next{right:10px}
+
+  body:not(.profiles-mode) .card:hover .desktop-finish-nav,
+  body:not(.profiles-mode) .desktop-finish-nav:focus-visible{
+    opacity:1;
+    transform:translateY(-50%) scale(1);
+  }
+
+  body:not(.profiles-mode) .desktop-finish-nav:hover{
+    background:#5b524a;
+    border-color:#5b524a;
+    color:#fff;
+  }
+
+  body:not(.profiles-mode) .desktop-finish-nav:focus-visible{
+    outline:2px solid rgba(91,82,74,.25);
+    outline-offset:2px;
+  }
+
+  body:not(.profiles-mode) .card-image{
+    cursor:grab;
+    user-select:none;
+  }
+
+  body:not(.profiles-mode) .card-image.is-dragging{
+    cursor:grabbing;
+  }
+
+  body:not(.profiles-mode) .card-image img{
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+
+  body:not(.profiles-mode) .card-finishes{
+    gap:5px;
+  }
+
+  body:not(.profiles-mode) .card-swatch{
+    width:20px;
+    height:20px;
+    cursor:pointer;
+    transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+  }
+
+  body:not(.profiles-mode) .card-swatch:hover{
+    transform:scale(1.10);
+    border-color:#5b524a;
+  }
+
+  body:not(.profiles-mode) .card-swatch.active{
+    transform:scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   WEB/DESKTOP — CLEAN KEUS FINISHES + CTA
+   ========================================================= */
+@media(min-width:781px){
+  body:not(.profiles-mode) .desktop-finish-nav{display:none!important}
+
+  body:not(.profiles-mode) .card-finishes{
+    display:flex!important;
+    align-items:center!important;
+    flex-wrap:wrap!important;
+    overflow:visible!important;
+    gap:5px!important;
+    padding-bottom:0!important;
+    scrollbar-width:none!important;
+  }
+  body:not(.profiles-mode) .card-finishes::-webkit-scrollbar{
+    display:none!important;width:0!important;height:0!important;
+  }
+  body:not(.profiles-mode) .card-swatch{flex:0 0 auto!important}
+  body:not(.profiles-mode) .more-finishes{display:none!important}
+
+  body:not(.profiles-mode) .view-detail-cta{
+    min-height:auto!important;
+    height:auto!important;
+    padding:4px 0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#5b524a!important;
+    box-shadow:none!important;
+    font-weight:700!important;
+    letter-spacing:.015em!important;
+    text-decoration:none!important;
+    position:relative;
+  }
+  body:not(.profiles-mode) .view-detail-cta::after{
+    content:'';
+    position:absolute;
+    left:0;right:0;bottom:1px;
+    height:1px;
+    background:#c6beb6;
+    transform:scaleX(0);
+    transform-origin:left center;
+    transition:transform .18s ease;
+  }
+  body:not(.profiles-mode) .view-detail-cta:hover{
+    background:transparent!important;
+    color:#403a35!important;
+    transform:none!important;
+  }
+  body:not(.profiles-mode) .view-detail-cta:hover::after{transform:scaleX(1)}
+  body:not(.profiles-mode) .view-detail-cta b{
+    font-weight:500!important;
+    margin-left:4px;
+  }
+}
+
+
+/* =========================================================
+   FINISH / COLOUR STATES — PLAIN ACTIVE / INACTIVE
+   No shadows on colour selectors.
+   ========================================================= */
+.finish-chip,
+.finish-chip.active,
+.card-swatch,
+.card-swatch.active,
+.finish-option,
+.finish-option.active,
+.profile-variation-btn,
+.profile-variation-btn.active,
+.profile-row-option,
+.profile-row-option.active{
+  box-shadow:none!important;
+}
+
+.finish-chip.active,
+.card-swatch.active,
+.finish-option.active,
+.profile-variation-btn.active,
+.profile-row-option.active{
+  border-color:#5b524a!important;
+}
+
+.card-swatch:not(.active){
+  border-color:transparent!important;
+}
+
+.profile-variation-btn:not(.active),
+.profile-row-option:not(.active){
+  border-color:#d8d1c8!important;
+}
+
+
+/* Performance only: allow the browser to skip painting off-screen cards. */
+.card{
+  content-visibility:auto;
+  contain-intrinsic-size:520px;
+}
+
+
+/* =========================================================
+   KEUS CUSTOM FILTER DROPDOWNS
+   Same look & feel as All Products.
+   Native selects remain the source of truth for filter logic.
+   ========================================================= */
+.keus-filter-select{
+  position:relative;
+  min-width:0;
+  z-index:90;
+}
+.keus-filter-native{
+  position:absolute!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  width:1px!important;
+  height:1px!important;
+  margin:0!important;
+  padding:0!important;
+}
+.keus-filter-trigger{
+  width:100%;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 14px;
+  border:1px solid #c6beb6;
+  border-radius:12px;
+  background:#fbfaf7;
+  color:#070404;
+  font-size:14.3px;
+  font-weight:700;
+  text-align:left;
+  cursor:pointer;
+}
+.keus-filter-trigger:hover,
+.keus-filter-select.open .keus-filter-trigger{
+  border-color:#5b524a;
+  background:#fff;
+}
+.keus-filter-trigger-text{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.keus-filter-chevron{
+  width:8px;
+  height:8px;
+  border-right:1.5px solid #5b524a;
+  border-bottom:1.5px solid #5b524a;
+  transform:rotate(45deg) translateY(-2px);
+  transition:transform .18s ease;
+  flex:0 0 auto;
+}
+.keus-filter-select.open .keus-filter-chevron{
+  transform:rotate(225deg) translate(-1px,-1px);
+}
+.keus-filter-menu{
+  position:absolute;
+  left:0;
+  right:0;
+  top:calc(100% + 7px);
+  max-height:min(480px,65vh);
+  overflow-y:auto;
+  background:#fbfaf7;
+  border:1px solid #c6beb6;
+  border-radius:16px;
+  box-shadow:0 22px 55px rgba(7,4,4,.18);
+  padding:6px;
+  z-index:999;
+  scrollbar-width:thin;
+  scrollbar-color:#5b524a #eeeae5;
+}
+.keus-filter-option{
+  width:100%;
+  min-height:46px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border:0;
+  border-bottom:1px solid #e8e3de;
+  border-radius:9px;
+  background:transparent;
+  color:#070404;
+  font-size:15.6px;
+  font-weight:500;
+  text-align:left;
+  cursor:pointer;
+}
+.keus-filter-option:last-child{border-bottom:0}
+.keus-filter-option:hover{background:#eeeae5;color:#070404}
+.keus-filter-option.active{
+  background:#5b524a;
+  color:#fff;
+  font-weight:700;
+}
+.keus-filter-option i{
+  width:18px;
+  height:18px;
+  border:1.5px solid #5b524a;
+  border-radius:50%;
+  position:relative;
+  flex:0 0 auto;
+}
+.keus-filter-option.active i{border-color:#fff}
+.keus-filter-option.active i:after{
+  content:"";
+  position:absolute;
+  inset:4px;
+  border-radius:50%;
+  background:#fff;
+}
+
+/* Advanced filter menus must not be clipped when open. */
+.advanced.open{overflow:visible}
+
+/* Preserve the existing Profile-page filter visibility exactly. */
+body.profiles-mode .keus-filter-select[data-native-id="cctFilter"],
+body.profiles-mode .keus-filter-select.watt-main,
+body.profiles-mode .keus-filter-select[data-native-id="itemNoFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="vfFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="imaxFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="criFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="beamFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="batchCodeFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="bisNoFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="bisSpecFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="mrpFilter"],
+body.profiles-mode .keus-filter-select[data-native-id="mfgByFilter"]{
+  display:none!important;
+}
+
+@media(max-width:780px){
+  .toolbar .keus-filter-select[data-native-id="cctFilter"]{order:4!important}
+  .toolbar .keus-filter-select.watt-main{order:5!important}
+
+  .keus-filter-trigger{
+    height:36px;
+    border-radius:11px;
+    padding:0 12px;
+    font-size:11.7px;
+    background:#fbfaf7;
+  }
+  .keus-filter-menu{
+    position:fixed;
+    left:12px;
+    right:12px;
+    top:90px;
+    max-height:72vh;
+    border-radius:18px;
+    padding:6px;
+    background:#fbfaf7;
+    box-shadow:0 28px 70px rgba(7,4,4,.28);
+  }
+  .keus-filter-option{
+    min-height:43px;
+    padding:0 11px;
+    font-size:14.3px;
+    border-radius:9px;
+  }
+  .keus-filter-option i{
+    width:17px;
+    height:17px;
+  }
+}
+
+@media(max-width:520px){
+  .toolbar .keus-filter-select[data-native-id="cctFilter"],
+  .toolbar .keus-filter-select.watt-main{
+    grid-column:1/-1!important;
+  }
+}
+
+
+/* =========================================================
+   FILTER FORM LAYOUT FIX
+   Restores the original toolbar / advanced-filter geometry
+   after wrapping native selects with KEUS custom dropdowns.
+   ========================================================= */
+.toolbar .keus-filter-select{
+  min-width:0!important;
+  width:100%!important;
+}
+
+.toolbar .keus-filter-select[data-native-id="cctFilter"]{
+  grid-column:1/3!important;
+  order:3!important;
+}
+
+.toolbar .keus-filter-select.watt-main{
+  display:block!important;
+  grid-column:3/5!important;
+  order:4!important;
+}
+
+.toolbar .keus-filter-select[data-native-id="cctFilter"] .keus-filter-trigger,
+.toolbar .keus-filter-select.watt-main .keus-filter-trigger{
+  height:42px!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  border-color:#d8d1c7!important;
+  padding-left:11px!important;
+  padding-right:12px!important;
+}
+
+.advanced .keus-filter-select{
+  width:100%!important;
+  min-width:0!important;
+}
+
+.advanced .keus-filter-trigger{
+  height:40px!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  border-color:#d8d1c7!important;
+  padding-left:11px!important;
+  padding-right:11px!important;
+}
+
+.advanced.open{
+  overflow:visible!important;
+}
+
+@media(max-width:1120px) and (min-width:781px){
+  .toolbar .keus-filter-select.watt-main{
+    display:none!important;
+  }
+}
+
+@media(max-width:780px){
+  .toolbar .keus-filter-select[data-native-id="cctFilter"]{
+    grid-column:1/2!important;
+    order:4!important;
+  }
+  .toolbar .keus-filter-select.watt-main{
+    display:block!important;
+    grid-column:2/3!important;
+    order:5!important;
+  }
+}
+
+@media(max-width:520px){
+  .toolbar .keus-filter-select[data-native-id="cctFilter"],
+  .toolbar .keus-filter-select.watt-main{
+    grid-column:1/-1!important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE ONLY — CLASSIC / LIGHTER TYPOGRAPHY
+   Desktop/web remains unchanged.
+   ========================================================= */
+@media(max-width:780px){
+  /* Product cards already open details when the card/image is tapped. */
+  .view-detail-cta,
+  .profile-details-btn{
+    display:none!important;
+  }
+
+  /* Remove the now-empty footer only on Profile cards. */
+  body.profiles-mode .profile-card .card-foot{
+    display:none!important;
+  }
+
+  /* Normal, lighter typography throughout the mobile catalogue. */
+  body,
+  button,
+  select,
+  input,
+  .card-title,
+  .card-price,
+  .card-kicker,
+  .mini-label,
+  .mini-value,
+  .catalogue-count,
+  .finish-title,
+  .finish-chip,
+  .card-finish-label,
+  .card-foot,
+  .series-variant-badge,
+  .match-tag,
+  .profile-spec-label,
+  .profile-spec-value,
+  .profile-description,
+  .profile-selector-head,
+  .profile-row-option,
+  .keus-product-trigger,
+  .keus-product-option,
+  .keus-filter-trigger,
+  .keus-filter-option{
+    font-weight:400!important;
+  }
+
+  /* Product name + price specifically kept elegant and light. */
+  .card-title{
+    font-weight:400!important;
+  }
+  .card-price{
+    font-weight:400!important;
+  }
+
+  /* Selected states use border/background, not heavier type. */
+  .finish-chip.active,
+  .card-swatch.active,
+  .profile-row-option.active,
+  .keus-product-option.active,
+  .keus-filter-option.active{
+    font-weight:400!important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE LANDING PAGE — MINIMAL FILTER ROW
+   Mobile only:
+   - All Products + More Filters on one line
+   - Search, CCT and Wattage removed from the top row
+   - Native browser selects used instead of custom dropdown UI
+   Desktop/web is unchanged.
+   ========================================================= */
+@media(max-width:780px){
+  .toolbar{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:8px!important;
+    align-items:center!important;
+  }
+
+  /* Mobile top row: only All Products + More Filters */
+  .toolbar .search,
+  .toolbar #searchBox,
+  .mobile-product-label,
+  .toolbar #cctFilter,
+  .toolbar #wattageFilter,
+  .toolbar .keus-filter-select[data-native-id="cctFilter"],
+  .toolbar .keus-filter-select[data-native-id="wattageFilter"],
+  .toolbar .keus-filter-select.watt-main{
+    display:none!important;
+  }
+
+  /* Remove the custom All Products dropdown on mobile. */
+  #keusProductSelect{
+    display:none!important;
+  }
+
+  /* Restore the original native All Products select. */
+  #nameFilter.native-product-select{
+    position:static!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    display:block!important;
+    width:100%!important;
+    height:38px!important;
+    grid-column:1/2!important;
+    order:1!important;
+    appearance:auto!important;
+    -webkit-appearance:menulist!important;
+    padding:0 6px!important;
+    margin:0!important;
+    border:1px solid #c6beb6!important;
+    border-radius:4px!important;
+    background:#fff!important;
+    color:#070404!important;
+    box-shadow:none!important;
+    font-weight:400!important;
+    font-size:12px!important;
+  }
+
+  .toolbar .more-btn{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    grid-column:2/3!important;
+    order:2!important;
+    width:auto!important;
+    min-width:106px!important;
+    height:38px!important;
+    padding:0 12px!important;
+    margin:0!important;
+    border-radius:4px!important;
+    box-shadow:none!important;
+    white-space:nowrap!important;
+    font-weight:400!important;
+    font-size:11px!important;
+  }
+
+  /* Advanced filters: use native selects, not custom dropdown menus. */
+  .advanced .keus-filter-trigger,
+  .advanced .keus-filter-menu{
+    display:none!important;
+  }
+
+  .advanced .keus-filter-select{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  .advanced .keus-filter-native{
+    position:static!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    display:block!important;
+    width:100%!important;
+    height:38px!important;
+    appearance:auto!important;
+    -webkit-appearance:menulist!important;
+    padding:0 6px!important;
+    margin:0!important;
+    border:1px solid #c6beb6!important;
+    border-radius:4px!important;
+    background:#fff!important;
+    color:#070404!important;
+    box-shadow:none!important;
+    font-weight:400!important;
+    font-size:11px!important;
+  }
+
+  .advanced.open{
+    overflow:visible!important;
+  }
+}
+
+@media(max-width:520px){
+  .toolbar{
+    grid-template-columns:minmax(0,1fr) auto!important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE LANDING PAGE — SEARCH + COMPACT FILTER ROW
+   Search: full width
+   Second row: All Products + More Filters
+   CCT and Wattage remain hidden
+   ========================================================= */
+@media(max-width:780px){
+  .toolbar .search,
+  .toolbar #searchBox{
+    display:block!important;
+    grid-column:1/-1!important;
+    order:1!important;
+    width:100%!important;
+    height:38px!important;
+    margin:0!important;
+    padding:0 10px!important;
+    border:1px solid #c6beb6!important;
+    border-radius:4px!important;
+    background:#fff!important;
+    box-shadow:none!important;
+    color:#070404!important;
+    font-size:11px!important;
+    font-weight:400!important;
+  }
+
+  .toolbar .search::placeholder,
+  .toolbar #searchBox::placeholder{
+    color:#8b837a!important;
+    opacity:1!important;
+  }
+
+  #nameFilter.native-product-select{
+    grid-column:1/2!important;
+    order:2!important;
+  }
+
+  .toolbar .more-btn{
+    grid-column:2/3!important;
+    order:3!important;
+  }
+
+  /* Profile page: keep All Products and More Filters aligned on one row. */
+  body.profiles-mode .toolbar #nameFilter.native-product-select{
+    grid-column:1/2!important;
+    order:2!important;
+    height:38px!important;
+  }
+
+  body.profiles-mode .toolbar .more-btn{
+    grid-column:2/3!important;
+    order:3!important;
+    width:auto!important;
+    height:38px!important;
+    margin:0!important;
+  }
+}
+
+
+/* =========================================================
+   SOFT PRODUCT FINISH CROSSFADE — MOBILE + WEB
+   No slide/movement; preload prevents blinking.
+   ========================================================= */
+.card-image{
+  overflow:hidden!important;
+}
+.card-image img{
+  will-change:opacity;
+  backface-visibility:hidden;
+}
+
+
+/* Profile colour/variant image crossfade uses the same restrained treatment. */
+body.profiles-mode .card-image img{
+  will-change:opacity;
+  backface-visibility:hidden;
+}
+
+
+/* =========================================================
+   GLOBAL CATALOGUE SEARCH
+   Search spans Downlights, Tracklights, Profiles and Outdoor.
+   Category-specific filters are temporarily hidden while a
+   global search is active, then restored when search is cleared.
+   ========================================================= */
+body.global-search-mode .toolbar{
+  grid-template-columns:1fr!important;
+}
+body.global-search-mode .toolbar > :not(.search),
+body.global-search-mode .advanced,
+body.global-search-mode .finish-panel,
+body.global-search-mode .active-filters{
+  display:none!important;
+}
+body.global-search-mode .toolbar .search{
+  display:block!important;
+  grid-column:1/-1!important;
+  width:100%!important;
+}
+body.global-search-mode .category-tab{
+  opacity:.62;
+}
+body.global-search-mode .category-tab.active{
+  opacity:.82;
+}
+
+.global-result-card{
+  position:relative;
+}
+.global-category-badge{
+  position:absolute;
+  top:9px;
+  left:9px;
+  z-index:5;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(251,250,247,.94);
+  border:1px solid #d8d1c8;
+  color:#5b524a;
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.global-match-badge{
+  position:absolute;
+  top:9px;
+  right:9px;
+  z-index:5;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#5b524a;
+  color:#fff;
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:.04em;
+  pointer-events:none;
+}
+.global-result-meta{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0;
+  margin-top:11px;
+  border-top:1px solid #ece7e0;
+}
+.global-result-meta > div{
+  min-width:0;
+  padding-top:9px;
+}
+.global-result-meta > div+div{
+  padding-left:10px;
+  border-left:1px solid #ece7e0;
+}
+.global-meta-label{
+  display:block;
+  margin-bottom:4px;
+  color:#9a9188;
+  font-size:7px;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.global-meta-value{
+  display:block;
+  color:#4f4943;
+  font-size:10px;
+  font-weight:400;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.global-search-empty{
+  grid-column:1/-1;
+}
+
+@media(max-width:780px){
+  .global-category-badge,
+  .global-match-badge{
+    top:6px;
+    padding:4px 6px;
+    font-size:6px;
+  }
+  .global-category-badge{left:6px}
+  .global-match-badge{right:6px}
+  .global-result-meta{
+    margin-top:8px;
+  }
+  .global-meta-label{
+    font-size:6px;
+  }
+  .global-meta-value{
+    font-size:9px;
+  }
+}
+
+
+/* =========================================================
+   KEUS BLACK THEME OPTION
+   Core palette: #070404 / #c6beb6 / #5b524a
+   Product image wells stay light for colour accuracy.
+   ========================================================= */
+.top-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  margin-left:0;
+}
+.theme-toggle{
+  min-height:34px;
+  padding:0 10px 0 8px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid #49433e;
+  border-radius:999px;
+  background:transparent;
+  color:#c6beb6;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+.theme-toggle:hover{
+  border-color:#c6beb6;
+  color:#fff;
+}
+.theme-toggle-icon{
+  width:15px;
+  height:15px;
+  border:1px solid currentColor;
+  border-radius:50%;
+  position:relative;
+  overflow:hidden;
+  flex:0 0 auto;
+}
+.theme-toggle-icon:after{
+  content:"";
+  position:absolute;
+  inset:2px 2px 2px 7px;
+  border-radius:0 999px 999px 0;
+  background:currentColor;
+}
+.theme-toggle[aria-pressed="true"]{
+  background:#c6beb6;
+  border-color:#c6beb6;
+  color:#070404;
+}
+
+/* Black theme variables */
+body.keus-black{
+  --bg:#070404;
+  --paper:#11100f;
+  --card:#11100f;
+  --ink:#f5f2ee;
+  --muted:#b8b0a8;
+  --line:#2d2925;
+  --line2:#24211f;
+  --black:#070404;
+  --shadow:0 18px 50px rgba(0,0,0,.34);
+  background:#070404;
+  color:#f5f2ee;
+}
+body.keus-black .topbar{
+  background:#070404;
+  border-bottom:1px solid #292522;
+}
+body.keus-black .shell{
+  background:#070404;
+}
+body.keus-black .hero,
+body.keus-black .data-strip,
+body.keus-black .category-tabs,
+body.keus-black .catalogue-head{
+  border-color:#2d2925;
+}
+body.keus-black .eyebrow,
+body.keus-black .hero-side p,
+body.keus-black .status,
+body.keus-black .hint,
+body.keus-black .catalogue-count,
+body.keus-black .finish-title{
+  color:#aaa198;
+}
+body.keus-black .status strong{
+  color:#f5f2ee;
+}
+
+/* Tabs */
+body.keus-black .category-tabs{
+  background:#070404;
+}
+body.keus-black .category-tab{
+  background:#100f0e;
+  border-color:#302c28;
+  color:#c6beb6;
+}
+body.keus-black .category-tab:hover,
+body.keus-black .category-tab.active{
+  background:#c6beb6;
+  border-color:#c6beb6;
+  color:#070404;
+}
+
+/* Filters / search */
+body.keus-black .filter-shell{
+  background:rgba(7,4,4,.96);
+  border-color:#2d2925;
+}
+body.keus-black .field,
+body.keus-black select,
+body.keus-black input{
+  background:#11100f;
+  border-color:#34302c;
+  color:#f5f2ee;
+}
+body.keus-black .field:focus,
+body.keus-black select:focus,
+body.keus-black input:focus{
+  background:#151311;
+  border-color:#c6beb6;
+}
+body.keus-black input::placeholder{
+  color:#817970;
+}
+body.keus-black .more-btn,
+body.keus-black .reset-btn,
+body.keus-black .btn{
+  background:transparent;
+  border-color:#4a443f;
+  color:#d8d2cc;
+}
+body.keus-black .more-btn:hover,
+body.keus-black .reset-btn:hover,
+body.keus-black .btn:hover:not(:disabled){
+  background:#c6beb6;
+  border-color:#c6beb6;
+  color:#070404;
+}
+
+/* Custom dropdowns on desktop */
+body.keus-black .keus-product-trigger,
+body.keus-black .keus-filter-trigger,
+body.keus-black .keus-product-menu,
+body.keus-black .keus-filter-menu{
+  background:#11100f!important;
+  border-color:#34302c!important;
+  color:#f5f2ee!important;
+}
+body.keus-black .keus-product-option,
+body.keus-black .keus-filter-option{
+  background:#11100f!important;
+  color:#d8d2cc!important;
+}
+body.keus-black .keus-product-option:hover,
+body.keus-black .keus-filter-option:hover,
+body.keus-black .keus-product-option.active,
+body.keus-black .keus-filter-option.active{
+  background:#5b524a!important;
+  color:#fff!important;
+}
+
+/* Finish filters */
+body.keus-black .finish-chip{
+  background:#11100f;
+  border-color:#34302c;
+  color:#c6beb6;
+}
+body.keus-black .finish-chip:hover,
+body.keus-black .finish-chip.active{
+  background:#181512;
+  border-color:#c6beb6;
+  color:#fff;
+}
+body.keus-black .finish-chip.active{
+  box-shadow:none;
+}
+body.keus-black .filter-pill{
+  background:#24201d;
+  color:#d8d2cc;
+}
+body.keus-black .filter-pill span{
+  color:#a59d94;
+}
+
+/* Product cards */
+body.keus-black .card{
+  background:#11100f;
+  border-color:#27231f;
+  color:#f5f2ee;
+}
+body.keus-black .card:hover{
+  border-color:#5b524a;
+  box-shadow:0 18px 45px rgba(0,0,0,.38);
+}
+body.keus-black .card-image{
+  background:#f7f6f2;
+  border-color:#2b2723;
+}
+body.keus-black .card-kicker,
+body.keus-black .mini-label,
+body.keus-black .global-meta-label{
+  color:#918980;
+}
+body.keus-black .mini-value,
+body.keus-black .global-meta-value,
+body.keus-black .finish-gallery-card .finish-name{
+  color:#d7d0c9;
+}
+body.keus-black .spec-row,
+body.keus-black .mini-spec:nth-child(even),
+body.keus-black .global-result-meta,
+body.keus-black .global-result-meta > div+div{
+  border-color:#292522;
+}
+body.keus-black .card-price{
+  color:#c6beb6;
+}
+body.keus-black .series-variant-badge,
+body.keus-black .global-match-badge{
+  background:#5b524a;
+  color:#fff;
+}
+body.keus-black .global-category-badge{
+  background:#161310;
+  border-color:#3b3530;
+  color:#c6beb6;
+}
+
+/* Card finish dots / profile selectors */
+body.keus-black .card-swatch,
+body.keus-black .profile-row-option,
+body.keus-black .profile-variation-btn{
+  border-color:#46403a!important;
+}
+body.keus-black .card-swatch.active,
+body.keus-black .profile-row-option.active,
+body.keus-black .profile-variation-btn.active{
+  border-color:#c6beb6!important;
+  box-shadow:none!important;
+}
+body.keus-black .profile-description,
+body.keus-black .profile-spec-value{
+  color:#d5cec7!important;
+}
+body.keus-black .profile-spec-label,
+body.keus-black .profile-selector-head{
+  color:#989087!important;
+}
+
+/* Pagination / empty states */
+body.keus-black .pagination button,
+body.keus-black .page-btn{
+  background:#11100f;
+  border-color:#34302c;
+  color:#d8d2cc;
+}
+body.keus-black .pagination button:hover:not(:disabled),
+body.keus-black .page-btn:hover:not(:disabled){
+  background:#c6beb6;
+  border-color:#c6beb6;
+  color:#070404;
+}
+body.keus-black .empty{
+  background:#11100f!important;
+  border-color:#34302c!important;
+  color:#aaa198!important;
+}
+
+/* Keep native controls readable on mobile */
+@media(max-width:780px){
+  .theme-toggle{
+    width:34px;
+    height:34px;
+    min-height:34px;
+    padding:0;
+    justify-content:center;
+  }
+  .theme-toggle-text{display:none}
+  body.keus-black .category-tabs{
+    background:rgba(7,4,4,.98)!important;
+  }
+  body.keus-black #nameFilter.native-product-select,
+  body.keus-black .advanced .keus-filter-native,
+  body.keus-black .toolbar .search,
+  body.keus-black .toolbar #searchBox{
+    background:#11100f!important;
+    border-color:#34302c!important;
+    color:#f5f2ee!important;
+  }
+}
+
+
+/* KEUS header logo */
+.brand-logo-link{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;text-decoration:none}
+.brand-logo{display:block;width:auto;height:25px;max-width:96px}
+@media(max-width:780px){.brand-logo{height:21px;max-width:82px}}
+
+
+/* KEUS page-loading animation */
+.keus-page-loader{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#070404;opacity:1;visibility:visible;transition:opacity .28s ease,visibility .28s ease}
+.keus-page-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.keus-loader-inner{width:min(180px,50vw);display:flex;flex-direction:column;align-items:center;gap:20px}
+.keus-loader-logo{display:block;width:min(110px,34vw);height:auto;animation:keusLogoBreath 1.15s ease-in-out infinite}
+.keus-loader-line{position:relative;width:100%;height:1px;overflow:hidden;background:rgba(198,190,182,.18)}
+.keus-loader-line span{position:absolute;top:0;left:-42%;width:42%;height:100%;background:#c6beb6;animation:keusLoaderSweep 1.05s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes keusLoaderSweep{0%{left:-42%}55%{left:38%}100%{left:100%}}
+@keyframes keusLogoBreath{0%,100%{opacity:.58}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.keus-loader-logo,.keus-loader-line span{animation:none}}
+
+</style>
   <link rel="preconnect" href="https://wsrv.nl" crossorigin>
   <link rel="dns-prefetch" href="//wsrv.nl">
   <link rel="preconnect" href="https://i.ibb.co" crossorigin>
@@ -36,10 +2691,10 @@
 
     </div>
   </section>
-  <div class="data-strip"><div class="status" id="status" role="status" aria-live="polite">Loading Downlights catalogue…</div><div class="hint">Each tab loads its CSV from the <strong>data</strong> folder.</div></div>
+  <div class="data-strip"><div class="status" id="status">Loading Downlights catalogue…</div><div class="hint">Each tab loads its CSV from the <strong>data</strong> folder.</div></div>
 
   <nav class="category-tabs" id="categoryTabs" aria-label="Lighting categories">
-    <button class="category-tab active" type="button" data-category="downlights" aria-current="page">
+    <button class="category-tab active" type="button" data-category="downlights">
       <span class="cat-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>
       </span>
@@ -67,47 +2722,46 @@
 
   <section class="filter-shell" aria-label="Catalogue filters">
     <div class="toolbar">
-      <label class="sr-only" for="searchBox">Search catalogue</label>
-      <input class="field search" id="searchBox" type="search" placeholder="Search product, item no., stock code or specification…" autocomplete="off" />
-      <div class="mobile-product-label" id="productFilterLabel">Select Product</div>
+      <input class="field search" id="searchBox" type="search" placeholder="Search product, item no., stock code or specification…" />
+      <div class="mobile-product-label">Select Product</div>
       <select class="field product-main native-product-select" id="nameFilter" data-field="name" aria-hidden="true" tabindex="-1"><option value="">All products</option></select>
       <div class="keus-product-select" id="keusProductSelect">
-        <button class="keus-product-trigger" id="keusProductTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="productFilterLabel keusProductTriggerText" aria-controls="keusProductMenu">
+        <button class="keus-product-trigger" id="keusProductTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
           <span id="keusProductTriggerText">All products</span><span class="keus-product-chevron" aria-hidden="true"></span>
         </button>
         <div class="keus-product-menu" id="keusProductMenu" role="listbox" aria-label="All products" hidden></div>
       </div>
-      <select class="field" id="cctFilter" data-field="cct" aria-label="Filter by CCT"><option value="">All CCT</option></select>
-      <select class="field watt-main" id="wattageFilter" data-field="wattage" aria-label="Filter by wattage"><option value="">All wattages</option></select>
-      <button class="btn more-btn" id="moreBtn" type="button" aria-expanded="false" aria-controls="advancedFilters">More Filters</button>
+      <select class="field" id="cctFilter" data-field="cct"><option value="">All CCT</option></select>
+      <select class="field watt-main" id="wattageFilter" data-field="wattage"><option value="">All wattages</option></select>
+      <button class="btn more-btn" id="moreBtn" type="button">More Filters</button>
     </div>
     <div class="advanced" id="advancedFilters">
-      <select class="field" id="itemNoFilter" data-field="itemNo" aria-label="Filter by item number"><option value="">All item nos.</option></select>
-      <select class="field" id="vfFilter" data-field="vf" aria-label="Filter by forward voltage"><option value="">All Vf</option></select>
-      <select class="field" id="imaxFilter" data-field="imax" aria-label="Filter by maximum current"><option value="">All Imax</option></select>
-      <select class="field" id="criFilter" data-field="cri" aria-label="Filter by CRI"><option value="">All CRI</option></select>
-      <select class="field" id="cutoutFilter" data-field="cutout" aria-label="Filter by cutout"><option value="">All cutouts</option></select>
-      <select class="field" id="beamFilter" data-field="beam" aria-label="Filter by beam angle"><option value="">All beam angles</option></select>
-      <select class="field" id="batchCodeFilter" data-field="batchCode" aria-label="Filter by batch code"><option value="">All batch codes</option></select>
-      <select class="field" id="stockCodeFilter" data-field="stockCode" aria-label="Filter by stock code"><option value="">All stock codes</option></select>
-      <select class="field" id="bisNoFilter" data-field="bisNo" aria-label="Filter by BIS number"><option value="">All BIS nos.</option></select>
-      <select class="field" id="bisSpecFilter" data-field="bisSpec" aria-label="Filter by BIS specification"><option value="">All BIS SEC</option></select>
-      <select class="field" id="mrpFilter" data-field="mrp" aria-label="Filter by MRP"><option value="">All MRP</option></select>
-      <select class="field" id="mfgByFilter" data-field="mfgBy" aria-label="Filter by manufacturer"><option value="">All manufacturers</option></select>
+      <select class="field" id="itemNoFilter" data-field="itemNo"><option value="">All item nos.</option></select>
+      <select class="field" id="vfFilter" data-field="vf"><option value="">All Vf</option></select>
+      <select class="field" id="imaxFilter" data-field="imax"><option value="">All Imax</option></select>
+      <select class="field" id="criFilter" data-field="cri"><option value="">All CRI</option></select>
+      <select class="field" id="cutoutFilter" data-field="cutout"><option value="">All cutouts</option></select>
+      <select class="field" id="beamFilter" data-field="beam"><option value="">All beam angles</option></select>
+      <select class="field" id="batchCodeFilter" data-field="batchCode"><option value="">All batch codes</option></select>
+      <select class="field" id="stockCodeFilter" data-field="stockCode"><option value="">All stock codes</option></select>
+      <select class="field" id="bisNoFilter" data-field="bisNo"><option value="">All BIS nos.</option></select>
+      <select class="field" id="bisSpecFilter" data-field="bisSpec"><option value="">All BIS SEC</option></select>
+      <select class="field" id="mrpFilter" data-field="mrp"><option value="">All MRP</option></select>
+      <select class="field" id="mfgByFilter" data-field="mfgBy"><option value="">All manufacturers</option></select>
       <button class="btn reset-btn" id="resetBtn" type="button">Reset All</button>
     </div>
     <div class="finish-panel"><div class="finish-title">Finish</div><div class="finish-chips" id="finishChips"></div></div>
     <div class="active-filters" id="activeFilters"></div>
   </section>
 
-  <div class="catalogue-head"><h2>Product Collection</h2><div class="catalogue-count" id="catalogueCount" aria-live="polite">0 products</div></div>
-  <section class="grid" id="grid" aria-busy="true"></section>
+  <div class="catalogue-head"><h2>Product Collection</h2><div class="catalogue-count" id="catalogueCount">0 products</div></div>
+  <section class="grid" id="grid"></section>
   <div class="pagination" id="pagination" hidden><button class="btn" id="prevBtn" type="button">Previous</button><div class="page-info" id="pageInfo"></div><button class="btn" id="nextBtn" type="button">Next</button></div>
   <footer class="footer"><span>KEUS</span><span>Smart Living · Product Catalogue</span></footer>
 </main>
 
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" aria-describedby="detailSub" hidden>
-  <div class="modal-panel" tabindex="-1">
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal-panel">
     <div class="modal-top"><div class="modal-brand">KEUS</div><button class="close-btn" id="closeBtn" type="button" aria-label="Close">×</button></div>
     <div class="detail-wrap">
       <div class="visual-col">
@@ -119,13 +2773,1244 @@
     </div>
     <div class="variants">
       <div class="variants-head"><h3>Available Variants</h3><div class="variant-filter-note" id="variantFilterNote"></div></div>
-      <div class="table-wrap"><table><caption class="sr-only">Available product variants and technical specifications</caption><thead><tr><th scope="col">Finish</th><th scope="col">CCT</th><th scope="col">Vf</th><th scope="col">Imax</th><th scope="col">CRI</th><th scope="col">Cutout</th><th scope="col">Beam Angle</th><th scope="col">Wattage</th><th scope="col">Batch Code</th><th scope="col">Item No.</th><th scope="col">Stock Code</th><th scope="col">BIS No</th><th scope="col">BIS SEC</th><th scope="col">MRP</th><th scope="col">MFG BY</th></tr></thead><tbody id="variantBody"></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Finish</th><th>CCT</th><th>Vf</th><th>Imax</th><th>CRI</th><th>Cutout</th><th>Beam Angle</th><th>Wattage</th><th>Batch Code</th><th>Item No.</th><th>Stock Code</th><th>BIS No</th><th>BIS SEC</th><th>MRP</th><th>MFG BY</th></tr></thead><tbody id="variantBody"></tbody></table></div>
     </div>
   </div>
 </div>
 
+<script>
+(() => {
+  'use strict';
+
+  const IMAGE_QUALITY=64;
+  function sourceImageUrl(value){
+    const raw=String(value||'').trim();
+    if(!raw)return '';
+    try{
+      const u=new URL(raw,location.href);
+      if(u.hostname==='wsrv.nl'||u.hostname==='images.weserv.nl'){
+        let src=u.searchParams.get('url')||'';
+        if(src&&!/^https?:\/\//i.test(src))src='https://'+src;
+        return src||raw;
+      }
+    }catch(_){}
+    return raw;
+  }
+  function optimizeImageUrl(value,width=0){
+    const raw=String(value||'').trim();
+    if(!raw)return '';
+    try{
+      let u=new URL(raw,location.href);
+      if(u.hostname==='wsrv.nl'||u.hostname==='images.weserv.nl'){
+        u.protocol='https:';
+        u.hostname='wsrv.nl';
+        u.searchParams.set('output','webp');
+        u.searchParams.set('q',String(IMAGE_QUALITY));
+        if(width>0)u.searchParams.set('w',String(width));
+        return u.toString();
+      }
+      if(u.hostname==='i.ibb.co'||u.hostname==='ibb.co'||u.hostname==='www.ibb.co'){
+        const proxy=new URL('https://wsrv.nl/');
+        proxy.searchParams.set('url',u.href);
+        proxy.searchParams.set('output','webp');
+        proxy.searchParams.set('q',String(IMAGE_QUALITY));
+        if(width>0)proxy.searchParams.set('w',String(width));
+        return proxy.toString();
+      }
+    }catch(_){}
+    return raw;
+  }
+
+  const CATEGORIES={
+    downlights:{label:'Down Lights',file:'./data/downlights.csv'},
+    tracklights:{label:'Track Lights',file:'./data/tracklights.csv'},
+    profiles:{label:'Profiles',file:'./data/profiles.csv'},
+    outdoor:{label:'Outdoor Lights',file:'./data/outdoor-lights.csv'}
+  };
+  let activeCategory='downlights';
+  const DESKTOP_PAGE_SIZE=12;
+  function getPageSize(){
+    return window.matchMedia('(max-width:780px)').matches ? Number.MAX_SAFE_INTEGER : DESKTOP_PAGE_SIZE;
+  }
+  let records=[],groups=[],viewGroups=[],currentPage=0,activeGroup=null,activeFinish='',activeImage='';
+  const cardFinishSelections=new Map();
+  const profileVariationSelections=new Map();
+  const state={q:'',name:'',cct:'',wattage:'',itemNo:'',vf:'',imax:'',cri:'',cutout:'',beam:'',batchCode:'',stockCode:'',bisNo:'',bisSpec:'',mrp:'',mfgBy:'',finish:''};
+  const globalCatalogueCache={};
+  let globalCataloguePromise=null;
+  let globalSearchResults=[];
+  let globalSearchToken=0;
+  let globalSearchTimer=null;
+  const $=id=>document.getElementById(id);
+  const els={csvInput:$('csvInput'),status:$('status'),searchBox:$('searchBox'),nameFilter:$('nameFilter'),cctFilter:$('cctFilter'),wattageFilter:$('wattageFilter'),itemNoFilter:$('itemNoFilter'),vfFilter:$('vfFilter'),imaxFilter:$('imaxFilter'),criFilter:$('criFilter'),cutoutFilter:$('cutoutFilter'),beamFilter:$('beamFilter'),batchCodeFilter:$('batchCodeFilter'),stockCodeFilter:$('stockCodeFilter'),bisNoFilter:$('bisNoFilter'),bisSpecFilter:$('bisSpecFilter'),mrpFilter:$('mrpFilter'),mfgByFilter:$('mfgByFilter'),moreBtn:$('moreBtn'),advancedFilters:$('advancedFilters'),resetBtn:$('resetBtn'),finishChips:$('finishChips'),activeFilters:$('activeFilters'),grid:$('grid'),catalogueCount:$('catalogueCount'),pagination:$('pagination'),prevBtn:$('prevBtn'),nextBtn:$('nextBtn'),pageInfo:$('pageInfo'),modal:$('modal'),closeBtn:$('closeBtn'),detailImage:$('detailImage'),detailFinishOptions:$('detailFinishOptions'),thumbs:$('thumbs'),finishNote:$('finishNote'),detailKicker:$('detailKicker'),detailTitle:$('detailTitle'),detailSub:$('detailSub'),specGrid:$('specGrid'),variantBody:$('variantBody'),variantFilterNote:$('variantFilterNote'),categoryTabs:$('categoryTabs'),categoryTitle:$('categoryTitle')};
+
+  const headerAliases={
+    name:['name','product name','product'],itemNo:['item no','item number','itemno','item code'],vf:['vf','voltage'],imax:['imax','current','max current'],cct:['cct','colour temperature','color temperature'],cri:['cri'],cutout:['cutout','cut out','cut-out'],beam:['beam angle','beam','beamangle'],wattage:['wattage','watt','watts','power'],batchCode:['batch code','batch','batchcode'],stockCode:['stock code','stock','stockcode','sku'],bisNo:['bis no','bis number','bisno','bis registration no','bis registration number'],bisSpec:['bis sec','bissec','bis spec','bis specification','bisspec','bis standard','is standard'],mrp:['mrp','maximum retail price','retail price','price'],mfgBy:['mfg by','mfgby','manufacturer','manufactured by','manufacturing by','manufacturer name'],newDescription:['new description','newdescription','description','product description'],image:['image','image url','image link','imageurl'],finish:['finish','colour','color','finish colour','finish color']
+  };
+  const finishCodeMap={W:'White',B:'Mat Black',CG:'Champagne Gold',RG:'Rose Gold',BR:'Brown',COF:'Coffee',DGR:'Dark Gray',BB:'Ballet Blue',CH:'Chrome',CHB:'Chrome Black'};
+  const finishOrder=['White','Mat Black','Champagne Gold','Rose Gold','Brown','Coffee','Dark Gray','Ballet Blue','Chrome','Chrome Black','Standard'];
+  const finishClassMap={'White':'sw-white','Mat Black':'sw-mat-black','Champagne Gold':'sw-champagne-gold','Rose Gold':'sw-rose-gold','Brown':'sw-brown','Coffee':'sw-coffee','Dark Gray':'sw-dark-gray','Ballet Blue':'sw-ballet-blue','Chrome':'sw-chrome','Chrome Black':'sw-chrome-black','Standard':'sw-standard'};
+  const filterFields=['name','cct','wattage','itemNo','vf','imax','cri','cutout','beam','batchCode','stockCode','bisNo','bisSpec','mrp','mfgBy'];
+  const filterEls={name:els.nameFilter,cct:els.cctFilter,wattage:els.wattageFilter,itemNo:els.itemNoFilter,vf:els.vfFilter,imax:els.imaxFilter,cri:els.criFilter,cutout:els.cutoutFilter,beam:els.beamFilter,batchCode:els.batchCodeFilter,stockCode:els.stockCodeFilter,bisNo:els.bisNoFilter,bisSpec:els.bisSpecFilter,mrp:els.mrpFilter,mfgBy:els.mfgByFilter};
+  const filterLabels={name:'Product',cct:'CCT',wattage:'Wattage',itemNo:'Item No.',vf:'Vf',imax:'Imax',cri:'CRI',cutout:'Cutout',beam:'Beam',batchCode:'Batch',stockCode:'Stock Code',bisNo:'BIS No',bisSpec:'BIS SEC',mrp:'MRP',mfgBy:'MFG BY',finish:'Finish'};
+  const optionLabels={name:'All products',cct:'All CCT',wattage:'All wattages',itemNo:'All item nos.',vf:'All Vf',imax:'All Imax',cri:'All CRI',cutout:'All cutouts',beam:'All beam angles',batchCode:'All batch codes',stockCode:'All stock codes',bisNo:'All BIS nos.',bisSpec:'All BIS SEC',mrp:'All MRP',mfgBy:'All manufacturers'};
+
+  function cleanKey(s){return String(s??'').replace(/^\uFEFF/,'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ')}
+  function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]))}
+  function unique(arr){return [...new Set(arr.map(v=>String(v??'').trim()).filter(Boolean))]}
+  function naturalSort(a,b){return String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:'base'})}
+  function numericSort(a,b){const na=parseFloat(String(a).replace(/[^0-9.]+/g,'')),nb=parseFloat(String(b).replace(/[^0-9.]+/g,''));if(Number.isFinite(na)&&Number.isFinite(nb)&&na!==nb)return na-nb;return naturalSort(a,b)}
+  function swatchClass(f){return finishClassMap[f]||'sw-standard'}
+  function swatchHtml(f,all=false){return `<span class="swatch ${all?'all':swatchClass(f)}" aria-hidden="true"></span>`}
+
+  function detectDelimiter(text){
+    const first=String(text??'').replace(/^\uFEFF/,'').split(/\r?\n/).find(l=>l.trim())||'';let quoted=false,counts={',':0,';':0,'\t':0};
+    for(let i=0;i<first.length;i++){const ch=first[i];if(ch==='"'){if(quoted&&first[i+1]==='"'){i++;continue}quoted=!quoted;continue}if(!quoted&&Object.prototype.hasOwnProperty.call(counts,ch))counts[ch]++}
+    return Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  function parseCSV(text){
+    text=String(text??'').replace(/^\uFEFF/,'');const delimiter=detectDelimiter(text),rows=[];let row=[],cell='',quoted=false;
+    for(let i=0;i<text.length;i++){const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){cell+='"';i++}else if(ch==='"'){quoted=false}else cell+=ch}else{if(ch==='"')quoted=true;else if(ch===delimiter){row.push(cell);cell=''}else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(ch!=='\r')cell+=ch}}
+    if(cell.length||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(v=>String(v).trim()!==''));
+  }
+  function normalizeFinishText(value){
+    const x=cleanKey(value).replace(/\bdefault\b/g,'').trim();if(!x)return '';
+    const map={white:'White',w:'White',black:'Mat Black','mat black':'Mat Black','matte black':'Mat Black',b:'Mat Black','champagne gold':'Champagne Gold','champeing gold':'Champagne Gold','champeign gold':'Champagne Gold','champain gold':'Champagne Gold',cg:'Champagne Gold','rose gold':'Rose Gold',rg:'Rose Gold',brown:'Brown',br:'Brown',coffee:'Coffee',cofee:'Coffee',cof:'Coffee','dark gray':'Dark Gray','dark grey':'Dark Gray',dgr:'Dark Gray','ballet blue':'Ballet Blue',bb:'Ballet Blue',chrome:'Chrome',crome:'Chrome',ch:'Chrome','chrome black':'Chrome Black','crome black':'Chrome Black',chb:'Chrome Black'};
+    return map[x]||String(value).trim();
+  }
+  function inferFinish(rec){
+    const code=String(rec.stockCode||'').trim().toUpperCase();const suffix=code.split('/').filter(Boolean).pop()||'';if(finishCodeMap[suffix])return finishCodeMap[suffix];
+    const img=decodeURIComponent(sourceImageUrl(rec.image)).toLowerCase().replace(/[_]+/g,'-');
+    const tests=[[/chrome[- ]?black|crome[- ]?black/,'Chrome Black'],[/champagne[- ]?gold|champeing[- ]?gold|champeign[- ]?gold/,'Champagne Gold'],[/rose[- ]?gold/,'Rose Gold'],[/ballet[- ]?blue/,'Ballet Blue'],[/dark[- ]?gr(?:a|e)y/,'Dark Gray'],[/coffee|cofee/,'Coffee'],[/brown/,'Brown'],[/chrome|crome/,'Chrome'],[/mat[- ]?black|matte[- ]?black|black|balck/,'Mat Black'],[/white/,'White']];
+    for(const [re,label] of tests)if(re.test(img))return label;return 'Standard';
+  }
+  function normalizeRows(rows){
+    if(rows.length<2)return[];const headers=rows[0].map(h=>String(h).trim()),headerMap={};headers.forEach((h,i)=>headerMap[cleanKey(h)]=i);
+    const indexOf=field=>{for(const a of headerAliases[field]||[]){const k=cleanKey(a);if(k in headerMap)return headerMap[k]}return-1};const idx={};Object.keys(headerAliases).forEach(k=>idx[k]=indexOf(k));if(idx.name<0)throw new Error('CSV must contain a “Name” column.');
+    return rows.slice(1).map((r,i)=>{const get=k=>idx[k]>=0?String(r[idx[k]]??'').trim():'';const rec={_row:i+2,name:get('name'),itemNo:get('itemNo'),vf:get('vf'),imax:get('imax'),cct:get('cct'),cri:get('cri'),cutout:get('cutout'),beam:get('beam'),wattage:get('wattage'),batchCode:get('batchCode'),stockCode:get('stockCode'),bisNo:get('bisNo'),bisSpec:get('bisSpec'),mrp:get('mrp'),mfgBy:get('mfgBy'),newDescription:get('newDescription'),image:get('image'),finish:get('finish')};rec.finish=normalizeFinishText(rec.finish)||inferFinish(rec);return rec}).filter(r=>r.name);
+  }
+
+  // PROFILE ONLY: colour/body + diffuser variation is read exclusively
+  // from the "New Description" column. Lighting categories do not use this.
+  const profileVariationMeta={
+    'White':{code:'WH',cls:'pv-white'},
+    'Grey & White Diffuser':{code:'GW',cls:'pv-grey-white'},
+    'Champagne & White Diffuser':{code:'CW',cls:'pv-champagne-white'},
+    'Black & White Diffuser':{code:'BW',cls:'pv-black-white'},
+    'Iron Grey & White Diffuser':{code:'IGW',cls:'pv-iron-white'},
+    'White & White Diffuser':{code:'WW',cls:'pv-white-white'},
+    'Black & Black Diffuser':{code:'BB',cls:'pv-black-black'},
+    'White & Black Diffuser':{code:'WB',cls:'pv-white-black'},
+    'White & Transparent Diffuser':{code:'WT',cls:'pv-white-transparent'},
+    'Black & Transparent Diffuser':{code:'BT',cls:'pv-black-transparent'},
+    'Black':{code:'BK',cls:'pv-black'}
+  };
+  function profileVariationFromDescription(value){
+    let s=String(value||'')
+      .replace(/<br\s*\/?>/gi,' ')
+      .replace(/\r?\n/g,' ')
+      .replace(/\s+/g,' ')
+      .trim()
+      .toLowerCase()
+      .replace(/transparant/g,'transparent')
+      .replace(/transperant/g,'transparent');
+    const tests=[
+      ['Iron Grey & White Diffuser','iron grey & white diffuser'],
+      ['Champagne & White Diffuser','champagne & white diffuser'],
+      ['Grey & White Diffuser','grey & white diffuser'],
+      ['Black & White Diffuser','black & white diffuser'],
+      ['White & White Diffuser','white & white diffuser'],
+      ['Black & Black Diffuser','black & black diffuser'],
+      ['White & Black Diffuser','white & black diffuser'],
+      ['White & Transparent Diffuser','white & transparent diffuser'],
+      ['Black & Transparent Diffuser','black & transparent diffuser']
+    ];
+    for(const [label,phrase] of tests)if(s.includes(phrase))return label;
+    if(/\bwhite\b/.test(s))return 'White';
+    if(/\bblack\b/.test(s))return 'Black';
+    return '';
+  }
+  function profileVariationCode(v){return (profileVariationMeta[v]||{}).code||v||'—'}
+  function profileVariationSwatch(v){
+    const meta=profileVariationMeta[v]||{cls:'pv-standard'};
+    return `<span class="profile-variation-dot ${meta.cls}" aria-hidden="true"></span>`;
+  }
+  function preferredProfileVariant(rows,variation=''){
+    if(variation){
+      const hit=rows.find(r=>profileVariationFromDescription(r.newDescription)===variation&&r.image);
+      if(hit)return hit;
+    }
+    const white=rows.find(r=>profileVariationFromDescription(r.newDescription)==='White'&&r.image);
+    return white||rows.find(r=>r.image)||rows[0]||null;
+  }
 
 
-<script src="./assets/js/catalogue.js" defer></script>
+  // =========================================================
+  // PROFILE PAGE ONLY
+  // Every displayed image is bound to one exact CSV row:
+  // Stock Code + New Description + colour variation + Image.
+  // Other lighting categories do not use these helpers.
+  // =========================================================
+  function profileDescriptionHead(value){
+    const parts=String(value||'')
+      .replace(/<br\s*\/?>/gi,'\n')
+      .split(/\r?\n/)
+      .map(s=>s.trim())
+      .filter(Boolean);
+    return parts[0]||'';
+  }
+  function profileFamilyName(row){
+    const head=profileDescriptionHead(row.newDescription);
+    const s=cleanKey(head);
+
+    if(s.startsWith('under cabinet')) return 'Under Cabinet';
+    if(s.startsWith('cove profile flexible')) return 'Cove Flexible';
+    if(s.startsWith('cove profile')) return 'Cove';
+    if(s.startsWith('wide recessed')) return 'Wide Recessed';
+    if(s.startsWith('slim recessed')) return 'Slim Recessed';
+    if(s.startsWith('slim trimless')) return 'Slim Trimless';
+    if(s.startsWith('thin recessed')) return 'Thin Recessed';
+    if(s.startsWith('thin surface')) return 'Thin Surface';
+    if(s.startsWith('wide surface')) return 'Wide Surface';
+    if(s.startsWith('ceiling recessed')||s.startsWith('ceiling trimless')) return 'Ceiling';
+    if(s.startsWith('curtain grazer')) return 'Grazer';
+    if(s.startsWith('wall mounted')) return 'Wall Mounted UP/DOWN Profile';
+    if(s.startsWith('wall grazer')) return 'Wall Grazer Profile';
+    if(s.startsWith('lumen fly')) return 'Lumen';
+    if(s.startsWith('bendable curve')) return 'Bendable';
+    if(s.startsWith('thin trimless')||s.startsWith('wide trimless')||s.startsWith('deep trimless')) return 'Trimless';
+    if(s.startsWith('deep surface')) return 'Surface';
+    if(s.startsWith('deep recessed')) return 'Recessed';
+    if(/^suspended\b/.test(s)) return 'Suspended';
+    if(s.startsWith('water proof')) return 'Water Proof Profile';
+    if(s.startsWith('surface indirect')) return 'Wall Mounted Profile';
+
+    return String(row.name||head||'Profile').trim();
+  }
+  function profileFamilyKey(row){return cleanKey(profileFamilyName(row))}
+  function groupProfileProducts(rows){
+    const map=new Map();
+    for(const r of rows){
+      const k=profileFamilyKey(r);
+      if(!map.has(k))map.set(k,{name:profileFamilyName(r),profileKey:k,variants:[]});
+      map.get(k).variants.push(r);
+    }
+    return [...map.values()];
+  }
+  function profileRowKey(row){
+    return `${String(row.stockCode||'').trim()}::${String(row.newDescription||'').trim()}`;
+  }
+  function profileOptionLabel(row){
+    const variation=profileVariationFromDescription(row.newDescription);
+    return profileVariationCode(variation);
+  }
+  function profileImageMarkup(row,width=520,extra=''){
+    if(!row||!row.image)return `<span class="profile-image-unavailable">Image unavailable</span>`;
+    const fast=optimizeImageUrl(row.image,width);
+    const original=sourceImageUrl(row.image);
+    return `<img src="${escapeHtml(fast)}" data-profile-fallback="${escapeHtml(original)}" ${extra} onerror="window.__keusProfileImageFallback&&window.__keusProfileImageFallback(this)" alt="">`;
+  }
+  window.__keusProfileImageFallback=function(img){
+    const fallback=img.dataset.profileFallback||'';
+    if(fallback && img.src!==fallback && img.dataset.profileFallbackUsed!=='1'){
+      img.dataset.profileFallbackUsed='1';
+      img.src=fallback;
+      return;
+    }
+    img.style.display='none';
+    const parent=img.parentElement;
+    if(parent&&!parent.querySelector('.profile-image-unavailable')){
+      const span=document.createElement('span');
+      span.className='profile-image-unavailable';
+      span.textContent='Image unavailable';
+      parent.appendChild(span);
+    }
+  };
+  function bindProfileCardSwipe(card,rows,onSelect){
+    const imageArea=card.querySelector('.card-image');
+    if(!imageArea||rows.length<2)return;
+    let sx=0,sy=0;
+    imageArea.addEventListener('touchstart',e=>{
+      const t=e.touches&&e.touches[0];
+      if(!t)return;
+      sx=t.clientX;sy=t.clientY;
+    },{passive:true});
+    imageArea.addEventListener('touchend',e=>{
+      if(!window.matchMedia('(max-width:780px)').matches)return;
+      const t=e.changedTouches&&e.changedTouches[0];
+      if(!t)return;
+      const dx=t.clientX-sx,dy=t.clientY-sy;
+      if(Math.abs(dx)<34||Math.abs(dx)<=Math.abs(dy))return;
+      const active=card.querySelector('[data-profile-row].active');
+      let idx=active?Number(active.dataset.profileIndex||0):0;
+      idx=dx<0?(idx+1)%rows.length:(idx-1+rows.length)%rows.length;
+      onSelect(idx);
+    },{passive:true});
+  }
+
+  function groupProducts(rows){const map=new Map();for(const r of rows){const k=cleanKey(r.name);if(!map.has(k))map.set(k,{name:r.name,variants:[]});map.get(k).variants.push(r)}return[...map.values()]}
+  function finishSort(a,b){const ia=finishOrder.indexOf(a),ib=finishOrder.indexOf(b);if(ia>=0||ib>=0)return(ia<0?999:ia)-(ib<0?999:ib);return naturalSort(a,b)}
+  function summarize(values,joiner=' / '){const vals=unique(values);if(!vals.length)return'—';if(vals.length<=3)return vals.join(joiner);return vals.slice(0,2).join(joiner)+` +${vals.length-2}`}
+  function summarizeAll(values,joiner=' / '){const vals=unique(values).sort(numericSort);return vals.length?vals.join(joiner):'—'}
+  function summarizeCCT(values){const vals=unique(values);if(!vals.length)return'—';const parsed=vals.map(v=>({v,n:parseInt(String(v).replace(/[^0-9]/g,''),10)}));if(parsed.every(x=>Number.isFinite(x.n))){const nums=[...new Set(parsed.map(x=>x.n))].sort((a,b)=>a-b);if(nums.length===1)return`${nums[0]}K`;return`${nums[0]}–${nums[nums.length-1]}K`}return summarize(vals)}
+  function searchMatches(r,q){if(!q)return true;const hay=[r.name,r.itemNo,r.vf,r.imax,r.cct,r.cri,r.cutout,r.beam,r.wattage,r.batchCode,r.stockCode,r.bisNo,r.bisSpec,r.mrp,r.mfgBy,r.newDescription,r.finish,r.image].join(' ').toLowerCase();return hay.includes(q)}
+  function rowMatches(r,ignore=''){if(!searchMatches(r,state.q))return false;if(ignore!=='finish'&&state.finish&&r.finish!==state.finish)return false;for(const f of filterFields){if(f===ignore)continue;if(state[f]&&r[f]!==state[f])return false}return true}
+
+  function optionSortFor(field,vals){return vals.sort(['cct','wattage','beam','cri','imax','mrp'].includes(field)?numericSort:naturalSort)}
+
+
+  function initKeusFilterSelects(){
+    document.querySelectorAll('select.field').forEach(select=>{
+      if(select.id==='nameFilter'||select.closest('.keus-filter-select'))return;
+
+      const wrap=document.createElement('div');
+      wrap.className='keus-filter-select';
+      if(select.classList.contains('watt-main'))wrap.classList.add('watt-main');
+      wrap.dataset.nativeId=select.id;
+
+      select.parentNode.insertBefore(wrap,select);
+      wrap.appendChild(select);
+      select.classList.add('keus-filter-native');
+
+      const trigger=document.createElement('button');
+      trigger.type='button';
+      trigger.className='keus-filter-trigger';
+      trigger.setAttribute('aria-haspopup','listbox');
+      trigger.setAttribute('aria-expanded','false');
+      trigger.innerHTML='<span class="keus-filter-trigger-text"></span><span class="keus-filter-chevron" aria-hidden="true"></span>';
+
+      const menu=document.createElement('div');
+      menu.className='keus-filter-menu';
+      menu.setAttribute('role','listbox');
+      menu.hidden=true;
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(menu);
+
+      trigger.addEventListener('click',e=>{
+        e.stopPropagation();
+        const shouldOpen=menu.hidden;
+        closeAllKeusFilterMenus();
+        closeKeusProductMenu();
+        if(shouldOpen)openKeusFilterMenu(wrap);
+      });
+    });
+    syncKeusFilterMenus();
+  }
+
+  function syncKeusFilterMenu(wrap){
+    const select=wrap.querySelector('select');
+    const label=wrap.querySelector('.keus-filter-trigger-text');
+    const menu=wrap.querySelector('.keus-filter-menu');
+    if(!select||!label||!menu)return;
+
+    const options=[...select.options];
+    const selected=select.value||'';
+    const selectedOption=options.find(o=>o.value===selected)||options[0];
+    label.textContent=selectedOption?selectedOption.textContent:'';
+
+    menu.innerHTML=options.map(opt=>{
+      const value=opt.value||'';
+      const active=value===selected;
+      return `<button class="keus-filter-option ${active?'active':''}" type="button" role="option" aria-selected="${active}" data-filter-value="${escapeHtml(value)}"><span>${escapeHtml(opt.textContent)}</span><i aria-hidden="true"></i></button>`;
+    }).join('');
+
+    menu.querySelectorAll('[data-filter-value]').forEach(btn=>btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      select.value=btn.dataset.filterValue;
+      closeAllKeusFilterMenus();
+      select.dispatchEvent(new Event('change',{bubbles:true}));
+    }));
+  }
+
+  function syncKeusFilterMenus(){
+    document.querySelectorAll('.keus-filter-select').forEach(syncKeusFilterMenu);
+  }
+
+  function openKeusFilterMenu(wrap){
+    const menu=wrap.querySelector('.keus-filter-menu');
+    const trigger=wrap.querySelector('.keus-filter-trigger');
+    if(!menu||!trigger)return;
+    menu.hidden=false;
+    wrap.classList.add('open');
+    trigger.setAttribute('aria-expanded','true');
+    const active=menu.querySelector('.keus-filter-option.active');
+    if(active)setTimeout(()=>active.scrollIntoView({block:'nearest'}),0);
+  }
+
+  function closeKeusFilterMenu(wrap){
+    const menu=wrap.querySelector('.keus-filter-menu');
+    const trigger=wrap.querySelector('.keus-filter-trigger');
+    if(!menu||!trigger)return;
+    menu.hidden=true;
+    wrap.classList.remove('open');
+    trigger.setAttribute('aria-expanded','false');
+  }
+
+  function closeAllKeusFilterMenus(){
+    document.querySelectorAll('.keus-filter-select').forEach(closeKeusFilterMenu);
+  }
+
+  function syncKeusProductMenu(){
+    const menu=$('keusProductMenu'),trigger=$('keusProductTrigger'),label=$('keusProductTriggerText');
+    if(!menu||!trigger||!label)return;
+    const options=[...els.nameFilter.options];
+    const selected=els.nameFilter.value||'';
+    label.textContent=selected||'All products';
+    menu.innerHTML=options.map(opt=>{
+      const value=opt.value||'';
+      const active=value===selected;
+      return `<button class="keus-product-option ${active?'active':''}" type="button" role="option" aria-selected="${active}" data-product-value="${escapeHtml(value)}"><span>${escapeHtml(opt.textContent)}</span><i aria-hidden="true"></i></button>`;
+    }).join('');
+    menu.querySelectorAll('[data-product-value]').forEach(btn=>btn.addEventListener('click',()=>{
+      els.nameFilter.value=btn.dataset.productValue;
+      state.name=els.nameFilter.value;
+      currentPage=0;
+      closeKeusProductMenu();
+      updateAll();
+    }));
+  }
+  function openKeusProductMenu(){
+    const wrap=$('keusProductSelect'),menu=$('keusProductMenu'),trigger=$('keusProductTrigger');
+    if(!wrap||!menu||!trigger)return;
+    menu.hidden=false;wrap.classList.add('open');trigger.setAttribute('aria-expanded','true');
+    const active=menu.querySelector('.keus-product-option.active');
+    if(active)setTimeout(()=>active.scrollIntoView({block:'nearest'}),0);
+  }
+  function closeKeusProductMenu(){
+    const wrap=$('keusProductSelect'),menu=$('keusProductMenu'),trigger=$('keusProductTrigger');
+    if(!wrap||!menu||!trigger)return;
+    menu.hidden=true;wrap.classList.remove('open');trigger.setAttribute('aria-expanded','false');
+  }
+
+  function categoryStatusHtml(key){
+    const cfg=CATEGORIES[key];
+    const data=globalCatalogueCache[key];
+    const recs=data?data.records:records;
+    const gps=data?data.groups:groups;
+    const finishes=unique(recs.map(r=>r.finish));
+    const unknown=finishes.filter(f=>!finishOrder.includes(f));
+    return `<strong>${escapeHtml(cfg.label)}</strong> · ${gps.length} products · ${recs.length} variants · ${finishes.length} finishes${unknown.length?` · ${unknown.length} custom finish${unknown.length===1?'':'es'}`:''}`;
+  }
+
+  async function getCatalogueForSearch(key){
+    if(globalCatalogueCache[key])return globalCatalogueCache[key];
+    const cfg=CATEGORIES[key];
+    const res=await fetch(encodeURI(cfg.file),{cache:'no-store'});
+    if(!res.ok)throw new Error(`${cfg.file}: ${res.status} ${res.statusText}`);
+    const text=await res.text();
+    const recs=normalizeRows(parseCSV(text));
+    const gps=key==='profiles'?groupProfileProducts(recs):groupProducts(recs);
+    const data={records:recs,groups:gps};
+    globalCatalogueCache[key]=data;
+    return data;
+  }
+
+  function ensureAllCataloguesForSearch(){
+    if(globalCataloguePromise)return globalCataloguePromise;
+    globalCataloguePromise=Promise.all(
+      Object.keys(CATEGORIES).map(async key=>{
+        const data=await getCatalogueForSearch(key);
+        return {key,...data};
+      })
+    ).catch(err=>{
+      globalCataloguePromise=null;
+      throw err;
+    });
+    return globalCataloguePromise;
+  }
+
+  function globalResultDetailUrl(result){
+    const row=result.row;
+    const params=new URLSearchParams();
+    params.set('category',result.category);
+
+    if(result.category==='profiles'){
+      const product=profileFamilyName(row);
+      params.set('product',product);
+      params.set('profileKey',profileFamilyKey(row));
+      if(row.stockCode)params.set('stockCode',row.stockCode);
+      if(row.newDescription)params.set('description',row.newDescription);
+    }else{
+      params.set('product',row.name);
+      if(row.finish)params.set('finish',row.finish);
+    }
+    return `light-details.html?${params.toString()}`;
+  }
+
+  function buildGlobalSearchResults(q,datasets){
+    const results=[];
+    const seen=new Set();
+
+    for(const data of datasets){
+      for(const row of data.records){
+        if(!searchMatches(row,q))continue;
+
+        // Search results are image-level, not just product-level.
+        // This allows different colour/product images to appear independently,
+        // while duplicate technical rows using the same image are suppressed.
+        const imageKey=String(row.image||'').trim();
+        const key=[
+          data.key,
+          cleanKey(row.name),
+          cleanKey(row.finish),
+          imageKey||cleanKey(row.stockCode)||String(row._row)
+        ].join('::');
+
+        if(seen.has(key))continue;
+        seen.add(key);
+        results.push({category:data.key,row});
+      }
+    }
+    return results;
+  }
+
+  function renderGlobalSearchResults(q){
+    els.grid.innerHTML='';
+    const total=globalSearchResults.length;
+    const categoryCounts={};
+    globalSearchResults.forEach(r=>categoryCounts[r.category]=(categoryCounts[r.category]||0)+1);
+
+    const categoriesFound=Object.keys(categoryCounts).length;
+    els.categoryTitle.textContent='Search Results';
+
+    const summary=Object.keys(CATEGORIES)
+      .filter(k=>categoryCounts[k])
+      .map(k=>`${CATEGORIES[k].label} ${categoryCounts[k]}`)
+      .join(' · ');
+
+    els.catalogueCount.textContent=total
+      ? `${total} image${total===1?'':'s'} · ${categoriesFound} categor${categoriesFound===1?'y':'ies'}`
+      : '0 results';
+
+    els.status.innerHTML=total
+      ? `<strong>All catalogue search</strong> · “${escapeHtml(q)}” · ${escapeHtml(summary)}`
+      : `<strong>All catalogue search</strong> · No result for “${escapeHtml(q)}”`;
+
+    if(!total){
+      els.grid.innerHTML=`<div class="empty global-search-empty">
+        <h3>No matching products</h3>
+        <p>Search checks all four catalogue sections, including product name, stock code, description, finish and image filename.</p>
+      </div>`;
+      els.pagination.hidden=true;
+      return;
+    }
+
+    const pageSize=getPageSize();
+    const pages=Math.ceil(total/pageSize);
+    currentPage=Math.min(currentPage,pages-1);
+    const start=currentPage*pageSize;
+
+    globalSearchResults.slice(start,start+pageSize).forEach(result=>{
+      const row=result.row;
+      const cfg=CATEGORIES[result.category];
+      const card=document.createElement('article');
+      card.className='card global-result-card';
+
+      const image=row.image;
+      const isProfile=result.category==='profiles';
+      const title=isProfile?profileFamilyName(row):row.name;
+      const variation=isProfile?profileVariationFromDescription(row.newDescription):row.finish;
+      const code=isProfile?profileVariationCode(variation):variation;
+      const rate=!isProfile&&row.mrp?`MRP ${row.mrp}`:'';
+      const kicker=row.itemNo||row.stockCode||'';
+      const secondaryLabel=isProfile?'Colour':'Finish';
+      const secondaryValue=code||variation||'—';
+
+      card.innerHTML=`
+        <div class="global-category-badge">${escapeHtml(cfg.label)}</div>
+        <div class="global-match-badge">Match</div>
+        <button class="card-open" type="button">
+          <div class="card-image">
+            ${image?`<img src="${escapeHtml(optimizeImageUrl(image,420))}" alt="${escapeHtml(title)}" loading="lazy" decoding="async" fetchpriority="low">`:'<span style="font-size:11px;color:#aaa">No image</span>'}
+          </div>
+          <div class="card-body">
+            ${kicker?`<div class="card-kicker">${escapeHtml(kicker)}</div>`:''}
+            <h3 class="card-title">${escapeHtml(title)}</h3>
+            ${rate?`<div class="card-price">${escapeHtml(rate)}</div>`:''}
+            <div class="global-result-meta">
+              <div>
+                <span class="global-meta-label">${escapeHtml(secondaryLabel)}</span>
+                <span class="global-meta-value">${escapeHtml(secondaryValue)}</span>
+              </div>
+              <div>
+                <span class="global-meta-label">Stock Code</span>
+                <span class="global-meta-value">${escapeHtml(row.stockCode||'—')}</span>
+              </div>
+            </div>
+          </div>
+        </button>`;
+
+      card.querySelector('.card-open').addEventListener('click',()=>{
+        window.location.href=globalResultDetailUrl(result);
+      });
+
+      els.grid.appendChild(card);
+    });
+
+    els.pagination.hidden=pages<=1;
+    els.pageInfo.textContent=`Page ${currentPage+1} / ${pages}`;
+    els.prevBtn.disabled=currentPage===0;
+    els.nextBtn.disabled=currentPage>=pages-1;
+  }
+
+  async function runGlobalSearch(q){
+    const query=String(q||'').trim().toLowerCase();
+    const token=++globalSearchToken;
+
+    if(!query){
+      document.body.classList.remove('global-search-mode');
+      document.body.classList.toggle('profiles-mode',activeCategory==='profiles');
+      els.categoryTitle.textContent=CATEGORIES[activeCategory].label;
+      els.status.innerHTML=categoryStatusHtml(activeCategory);
+      globalSearchResults=[];
+      currentPage=0;
+      updateAll();
+      return;
+    }
+
+    document.body.classList.add('global-search-mode');
+    document.body.classList.remove('profiles-mode');
+    els.categoryTitle.textContent='Search Results';
+    els.status.innerHTML=`Searching <strong>all catalogue sections</strong> for “${escapeHtml(query)}”…`;
+    els.catalogueCount.textContent='Searching…';
+    els.grid.innerHTML=`<div class="empty global-search-empty"><p>Searching Downlights, Tracklights, Profiles and Outdoor Lights…</p></div>`;
+    els.pagination.hidden=true;
+
+    try{
+      const datasets=await ensureAllCataloguesForSearch();
+      if(token!==globalSearchToken)return;
+      globalSearchResults=buildGlobalSearchResults(query,datasets);
+      currentPage=0;
+      renderGlobalSearchResults(query);
+    }catch(err){
+      console.error(err);
+      if(token!==globalSearchToken)return;
+      els.status.innerHTML=`<strong>Global search could not load all catalogue files.</strong>`;
+      els.grid.innerHTML=`<div class="empty global-search-empty"><p>${escapeHtml(err.message||String(err))}</p></div>`;
+      els.pagination.hidden=true;
+    }
+  }
+
+  function refreshSelectOptions(){
+    for(const field of filterFields){const select=filterEls[field];if(!select)continue;const current=state[field];const optionSource=field==='beam'?records:records.filter(r=>rowMatches(r,field));const vals=optionSortFor(field,unique(optionSource.map(r=>r[field])));select.innerHTML=`<option value="">${escapeHtml(optionLabels[field])}</option>`+vals.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');if(current&&vals.includes(current))select.value=current;else if(current){state[field]='';select.value=''}}
+    syncKeusProductMenu();
+    syncKeusFilterMenus();
+  }
+  function refreshFinishChips(){
+    if(activeCategory==='profiles'){
+      state.finish='';
+      els.finishChips.innerHTML='';
+      return;
+    }
+    const selected=selectedProductGroup();const source=selected?rowsForSelectedProductAllFinishes(selected):records.filter(r=>rowMatches(r,'finish'));const available=unique(source.map(r=>r.finish)).sort(finishSort);if(state.finish&&!available.includes(state.finish))state.finish='';
+    els.finishChips.innerHTML=`<button class="finish-chip ${state.finish?'':'active'}" type="button" data-finish="">${swatchHtml('',true)}<span>All</span></button>`+available.map(f=>`<button class="finish-chip ${state.finish===f?'active':''}" type="button" data-finish="${escapeHtml(f)}">${swatchHtml(f)}<span>${escapeHtml(f)}</span></button>`).join('');
+    els.finishChips.querySelectorAll('[data-finish]').forEach(btn=>btn.addEventListener('click',()=>{state.finish=btn.dataset.finish||'';cardFinishSelections.clear();currentPage=0;updateAll()}));
+  }
+  function refreshActiveFilters(){
+    const pills=[];if(state.q)pills.push(`<button class="filter-pill" type="button" data-clear="q"><b>Search:</b> ${escapeHtml(state.q)} <span>×</span></button>`);for(const f of [...filterFields,'finish'])if(state[f])pills.push(`<button class="filter-pill" type="button" data-clear="${f}"><b>${escapeHtml(filterLabels[f])}:</b> ${escapeHtml(state[f])} <span>×</span></button>`);els.activeFilters.innerHTML=pills.join('');els.activeFilters.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.clear;state[f]='';if(f==='q')els.searchBox.value='';else if(filterEls[f])filterEls[f].value='';currentPage=0;updateAll()}));
+  }
+  function computeViewGroups(){viewGroups=groups.map(g=>{const matched=g.variants.filter(r=>rowMatches(r));return{...g,matchedVariants:matched}}).filter(g=>g.matchedVariants.length)}
+  function updateAll(){refreshSelectOptions();refreshFinishChips();computeViewGroups();refreshActiveFilters();renderCatalogue()}
+
+  function representativeVariant(group,rowsOverride=null,finishOverride=''){const rows=rowsOverride&&rowsOverride.length?rowsOverride:(group.matchedVariants.length?group.matchedVariants:group.variants);const requested=finishOverride||state.finish;if(requested){const hit=rows.find(r=>r.finish===requested&&r.image);if(hit)return hit}const white=rows.find(r=>r.finish==='White'&&r.image);return white||rows.find(r=>r.image)||rows[0]||null}
+  function selectedProductGroup(){if(!state.name)return null;return groups.find(g=>g.name===state.name)||null}
+  function rowsForSelectedProductAllFinishes(group){if(!group)return[];return group.variants.filter(r=>{if(!searchMatches(r,state.q))return false;for(const f of filterFields){if(f==='name'||f==='finish')continue;if(state[f]&&r[f]!==state[f])return false}return true})}
+  function detailUrl(group,preferredFinish=''){
+    const params=new URLSearchParams();
+    params.set('category',activeCategory);
+    params.set('product',group.name);
+    if(preferredFinish)params.set('finish',preferredFinish);
+    return `light-details.html?${params.toString()}`;
+  }
+  function goToDetail(group,preferredFinish=''){
+    window.location.href=detailUrl(group,preferredFinish);
+  }
+  function cardFinishKey(group){
+    return `${activeCategory}::${cleanKey(group.name)}`;
+  }
+  function changeOnlyThisCardFinish(card,group,finish){
+    const key=cardFinishKey(group);
+    cardFinishSelections.set(key,finish);
+    const visual=representativeVariant(group,group.variants,finish);
+    const img=card.querySelector('.card-image img');
+    if(img&&visual&&visual.image){
+      img.src=optimizeImageUrl(visual.image,420);
+      img.alt=`${group.name} · ${finish}`;
+    }
+    const rate=card.querySelector('[data-card-rate]');
+    if(rate) rate.textContent=visual&&visual.mrp?`MRP ${visual.mrp}`:'Price on request';
+
+    let activeDot=null;
+    card.querySelectorAll('[data-card-finish]').forEach(btn=>{
+      const active=btn.dataset.cardFinish===finish;
+      btn.classList.toggle('active',active);
+      if(active) activeDot=btn;
+    });
+
+    // All finish dots stay visible on mobile; active state is enough.
+  }
+
+
+
+  function preloadCardFinish(group,finish){
+    return new Promise(resolve=>{
+      const visual=representativeVariant(group,group.variants,finish);
+      if(!visual||!visual.image){resolve('');return}
+      const src=optimizeImageUrl(visual.image,420);
+      const pre=new Image();
+      pre.decoding='async';
+      pre.onload=()=>resolve(src);
+      pre.onerror=()=>resolve(src);
+      pre.src=src;
+      if(pre.complete)resolve(src);
+    });
+  }
+
+  function preloadAdjacentCardFinishes(group,finishes,currentFinish){
+    if(!finishes||finishes.length<2)return;
+    let idx=finishes.indexOf(currentFinish);
+    if(idx<0)idx=0;
+    [
+      finishes[(idx+1)%finishes.length],
+      finishes[(idx-1+finishes.length)%finishes.length]
+    ].forEach(f=>{
+      const visual=representativeVariant(group,group.variants,f);
+      if(visual&&visual.image){
+        const pre=new Image();
+        pre.decoding='async';
+        pre.src=optimizeImageUrl(visual.image,420);
+      }
+    });
+  }
+
+  async function smoothChangeCardFinish(card,group,finishes,nextFinish,direction=0){
+    if(!nextFinish||card.dataset.finishAnimating==='1')return;
+
+    const current=cardFinishSelections.get(cardFinishKey(group))||state.finish||finishes[0]||'';
+    if(current===nextFinish){
+      changeOnlyThisCardFinish(card,group,nextFinish);
+      return;
+    }
+
+    const img=card.querySelector('.card-image img');
+    if(!img||typeof img.animate!=='function'){
+      changeOnlyThisCardFinish(card,group,nextFinish);
+      preloadAdjacentCardFinishes(group,finishes,nextFinish);
+      return;
+    }
+
+    card.dataset.finishAnimating='1';
+
+    // Preload the next finish first to avoid a white flash.
+    await preloadCardFinish(group,nextFinish);
+
+    const mobile=window.matchMedia('(max-width:780px)').matches;
+    const fadeOut=mobile?90:75;
+    const fadeIn=mobile?125:95;
+    const lowOpacity=mobile?.18:.28;
+
+    try{
+      const exit=img.animate(
+        [
+          {opacity:1},
+          {opacity:lowOpacity}
+        ],
+        {duration:fadeOut,easing:'ease-out',fill:'forwards'}
+      );
+      await exit.finished.catch(()=>{});
+
+      // Image, MRP and selected finish dot update together.
+      changeOnlyThisCardFinish(card,group,nextFinish);
+
+      const currentImg=card.querySelector('.card-image img');
+      if(currentImg){
+        currentImg.style.opacity=String(lowOpacity);
+
+        const enter=currentImg.animate(
+          [
+            {opacity:lowOpacity},
+            {opacity:1}
+          ],
+          {duration:fadeIn,easing:'ease-out',fill:'forwards'}
+        );
+        await enter.finished.catch(()=>{});
+        currentImg.style.opacity='';
+      }
+    }finally{
+      card.dataset.finishAnimating='0';
+      preloadAdjacentCardFinishes(group,finishes,nextFinish);
+    }
+  }
+
+  function changeCardFinishByStep(card,group,finishes,step){
+    if(!finishes||finishes.length<2)return;
+    const current=cardFinishSelections.get(cardFinishKey(group))||state.finish||finishes[0];
+    let idx=finishes.indexOf(current);
+    if(idx<0)idx=0;
+    idx=(idx+step+finishes.length)%finishes.length;
+    smoothChangeCardFinish(card,group,finishes,finishes[idx],step>0?1:-1);
+  }
+
+  function bindDesktopFinishControls(card,group,finishes){
+    if(!finishes||finishes.length<2)return;
+    const imageArea=card.querySelector('.card-image');
+    const prev=card.querySelector('[data-finish-prev]');
+    const next=card.querySelector('[data-finish-next]');
+
+    if(prev)prev.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      changeCardFinishByStep(card,group,finishes,-1);
+    });
+    if(next)next.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      changeCardFinishByStep(card,group,finishes,1);
+    });
+
+    if(!imageArea)return;
+
+    // Horizontal trackpad gesture on desktop.
+    let lastWheel=0;
+    imageArea.addEventListener('wheel',e=>{
+      if(!window.matchMedia('(min-width:781px)').matches)return;
+      if(Math.abs(e.deltaX)<=Math.abs(e.deltaY)||Math.abs(e.deltaX)<12)return;
+      const now=Date.now();
+      if(now-lastWheel<220)return;
+      lastWheel=now;
+      e.preventDefault();
+      changeCardFinishByStep(card,group,finishes,e.deltaX>0?1:-1);
+    },{passive:false});
+
+    // Mouse / pen drag left-right on the image.
+    let down=false,startX=0,startY=0,pointerId=null;
+    imageArea.addEventListener('pointerdown',e=>{
+      if(!window.matchMedia('(min-width:781px)').matches)return;
+      if(e.pointerType==='touch')return;
+      down=true;
+      startX=e.clientX;
+      startY=e.clientY;
+      pointerId=e.pointerId;
+      imageArea.classList.add('is-dragging');
+      try{imageArea.setPointerCapture(pointerId)}catch(_){}
+    });
+
+    imageArea.addEventListener('pointerup',e=>{
+      if(!down)return;
+      down=false;
+      imageArea.classList.remove('is-dragging');
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+      if(Math.abs(dx)>=42&&Math.abs(dx)>Math.abs(dy)){
+        card.dataset.suppressOpen='1';
+        changeCardFinishByStep(card,group,finishes,dx<0?1:-1);
+        setTimeout(()=>{if(card.dataset.suppressOpen==='1')card.dataset.suppressOpen='0'},350);
+      }
+      try{imageArea.releasePointerCapture(pointerId)}catch(_){}
+    });
+
+    imageArea.addEventListener('pointercancel',()=>{
+      down=false;
+      imageArea.classList.remove('is-dragging');
+    });
+  }
+
+  function bindMobileFinishSwipe(card,group,finishes){
+    const imageArea=card.querySelector('.card-image');
+    if(!imageArea || !finishes || finishes.length<2) return;
+
+    let startX=0,startY=0;
+    imageArea.addEventListener('touchstart',e=>{
+      const t=e.touches&&e.touches[0];
+      if(!t) return;
+      startX=t.clientX;
+      startY=t.clientY;
+    },{passive:true});
+
+    imageArea.addEventListener('touchend',e=>{
+      if(!window.matchMedia('(max-width:780px)').matches) return;
+      const t=e.changedTouches&&e.changedTouches[0];
+      if(!t) return;
+
+      const dx=t.clientX-startX;
+      const dy=t.clientY-startY;
+      if(Math.abs(dx)<34 || Math.abs(dx)<=Math.abs(dy)) return;
+
+      const current=cardFinishSelections.get(cardFinishKey(group))||state.finish||finishes[0];
+      let idx=finishes.indexOf(current);
+      if(idx<0) idx=0;
+      idx = dx<0 ? (idx+1)%finishes.length : (idx-1+finishes.length)%finishes.length;
+      smoothChangeCardFinish(card,group,finishes,finishes[idx],dx<0?1:-1);
+    },{passive:true});
+
+    const initialFinish=cardFinishSelections.get(cardFinishKey(group))||state.finish||finishes[0];
+    preloadAdjacentCardFinishes(group,finishes,initialFinish);
+  }
+  function renderProfileCatalogue(){
+    const total=viewGroups.length;
+    const totalMatched=viewGroups.reduce((n,g)=>n+g.matchedVariants.length,0);
+    els.catalogueCount.textContent=`${total} profile${total===1?'':'s'} · ${totalMatched} stock-code variant${totalMatched===1?'':'s'}`;
+    els.grid.innerHTML='';
+
+    if(!records.length){
+      els.grid.innerHTML=`<div class="empty"><h3>Profile catalogue unavailable</h3><p>The Profiles CSV needs Name, Stock Code, Cutout, New Description and Image.</p></div>`;
+      els.pagination.hidden=true;
+      return;
+    }
+    if(!total){
+      els.grid.innerHTML=`<div class="empty"><h3>No matching profiles</h3><p>Remove one or more filters to widen the result.</p><button class="btn" id="emptyReset" type="button">Reset All Filters</button></div>`;
+      els.pagination.hidden=true;
+      $('emptyReset').addEventListener('click',resetAll);
+      return;
+    }
+
+    const pages=Math.ceil(total/getPageSize());
+    currentPage=Math.min(currentPage,pages-1);
+    const pageStart=currentPage*getPageSize();
+
+    viewGroups.slice(pageStart,pageStart+getPageSize()).forEach(g=>{
+      const rows=g.matchedVariants.length?g.matchedVariants:g.variants;
+      const card=document.createElement('article');
+      card.className='card profile-card exact-profile-card';
+
+      let selectedIndex=0;
+      const stored=profileVariationSelections.get(`profile-row::${g.profileKey||cleanKey(g.name)}`);
+      if(stored){
+        const found=rows.findIndex(r=>profileRowKey(r)===stored);
+        if(found>=0)selectedIndex=found;
+      }
+
+      const preloadProfileRow=(row)=>{
+        return new Promise(resolve=>{
+          if(!row||!row.image){resolve();return}
+          const pre=new Image();
+          pre.decoding='async';
+          pre.onload=resolve;
+          pre.onerror=resolve;
+          pre.src=optimizeImageUrl(row.image,420);
+          if(pre.complete)resolve();
+        });
+      };
+
+      const preloadAdjacentProfileRows=(idx)=>{
+        if(rows.length<2)return;
+        const next=rows[(idx+1)%rows.length];
+        const prev=rows[(idx-1+rows.length)%rows.length];
+        [next,prev].forEach(r=>{
+          if(r&&r.image){
+            const pre=new Image();
+            pre.decoding='async';
+            pre.src=optimizeImageUrl(r.image,420);
+          }
+        });
+      };
+
+      const renderSelection=async(idx,useFade=true)=>{
+        const nextIndex=Math.max(0,Math.min(rows.length-1,idx));
+        const row=rows[nextIndex];
+
+        const applySelection=()=>{
+          selectedIndex=nextIndex;
+          profileVariationSelections.set(`profile-row::${g.profileKey||cleanKey(g.name)}`,profileRowKey(row));
+
+          const imageBox=card.querySelector('.card-image');
+          if(imageBox){
+            imageBox.innerHTML=profileImageMarkup(row,420,`loading="lazy" decoding="async" fetchpriority="low"`);
+            const img=imageBox.querySelector('img');
+            if(img)img.alt=`${g.name} · ${row.stockCode||''}`;
+          }
+
+          const stock=card.querySelector('[data-profile-stock]');
+          const cutout=card.querySelector('[data-profile-cutout]');
+          const desc=card.querySelector('[data-profile-description]');
+          const counter=card.querySelector('[data-profile-counter]');
+          if(stock)stock.textContent=row.stockCode||'—';
+          if(cutout)cutout.textContent=row.cutout||'—';
+          if(desc)desc.textContent=row.newDescription||'—';
+          if(counter)counter.textContent=`${selectedIndex+1} / ${rows.length}`;
+
+          card.querySelectorAll('[data-profile-row]').forEach((btn,i)=>{
+            btn.classList.toggle('active',i===selectedIndex);
+          });
+        };
+
+        if(!useFade||card.dataset.profileAnimating==='1'){
+          if(card.dataset.profileAnimating!=='1')applySelection();
+          return;
+        }
+
+        const imageBox=card.querySelector('.card-image');
+        const currentImg=imageBox&&imageBox.querySelector('img');
+        if(!currentImg||typeof currentImg.animate!=='function'){
+          applySelection();
+          preloadAdjacentProfileRows(nextIndex);
+          return;
+        }
+
+        card.dataset.profileAnimating='1';
+        await preloadProfileRow(row);
+
+        const mobile=window.matchMedia('(max-width:780px)').matches;
+        const fadeOut=mobile?90:75;
+        const fadeIn=mobile?125:95;
+        const lowOpacity=mobile?.18:.28;
+
+        try{
+          const exit=currentImg.animate(
+            [{opacity:1},{opacity:lowOpacity}],
+            {duration:fadeOut,easing:'ease-out',fill:'forwards'}
+          );
+          await exit.finished.catch(()=>{});
+
+          applySelection();
+
+          const incoming=card.querySelector('.card-image img');
+          if(incoming&&typeof incoming.animate==='function'){
+            incoming.style.opacity=String(lowOpacity);
+            const enter=incoming.animate(
+              [{opacity:lowOpacity},{opacity:1}],
+              {duration:fadeIn,easing:'ease-out',fill:'forwards'}
+            );
+            await enter.finished.catch(()=>{});
+            incoming.style.opacity='';
+          }
+        }finally{
+          card.dataset.profileAnimating='0';
+          preloadAdjacentProfileRows(selectedIndex);
+        }
+      };
+
+      const first=rows[selectedIndex]||rows[0];
+
+      card.innerHTML=`
+        <div class="series-variant-badge">${rows.length} variant${rows.length===1?'':'s'}</div>
+        <button class="card-open" type="button">
+          <div class="card-image">${profileImageMarkup(first,420,`loading="lazy" decoding="async" fetchpriority="low"`)}</div>
+          <div class="card-body">
+            <div class="card-kicker" data-profile-stock>${escapeHtml(first&&first.stockCode||'—')}</div>
+            <h3 class="card-title">${escapeHtml(g.name)}</h3>
+            <div class="profile-specs">
+              <div class="profile-spec"><div class="profile-spec-label">Stock Code</div><div class="profile-spec-value" data-profile-stock>${escapeHtml(first&&first.stockCode||'—')}</div></div>
+              <div class="profile-spec"><div class="profile-spec-label">Cutout</div><div class="profile-spec-value" data-profile-cutout>${escapeHtml(first&&first.cutout||'—')}</div></div>
+            </div>
+            <div class="profile-description" data-profile-description>${escapeHtml(first&&first.newDescription||'—')}</div>
+          </div>
+        </button>
+        <div class="card-body profile-exact-selector" style="padding-top:0">
+          <div class="profile-selector-head"><span>Variants & Colours</span><span data-profile-counter>${selectedIndex+1} / ${rows.length}</span></div>
+          <div class="profile-row-options">
+            ${rows.map((r,i)=>{
+              const variation=profileVariationFromDescription(r.newDescription);
+              return `<button class="profile-row-option ${i===selectedIndex?'active':''}" type="button" data-profile-row="${escapeHtml(profileRowKey(r))}" data-profile-index="${i}" title="${escapeHtml((r.stockCode||'')+' · '+(r.newDescription||''))}">
+                ${profileVariationSwatch(variation)}
+                <span>${escapeHtml(profileOptionLabel(r))}</span>
+              </button>`;
+            }).join('')}
+          </div>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="card-foot"><span></span><button class="profile-details-btn" type="button">View Details <b>→</b></button></div>
+        </div>`;
+
+      card.querySelectorAll('[data-profile-row]').forEach((btn,i)=>btn.addEventListener('click',e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        renderSelection(i);
+      }));
+
+      const goProfileDetail=()=>{
+        const row=rows[selectedIndex]||rows[0];
+        const params=new URLSearchParams();
+        params.set('category','profiles');
+        params.set('product',g.name);
+        params.set('profileKey',g.profileKey||cleanKey(g.name));
+        if(row&&row.stockCode)params.set('stockCode',row.stockCode);
+        if(row&&row.newDescription)params.set('description',row.newDescription);
+        window.location.href=`light-details.html?${params.toString()}`;
+      };
+
+      card.querySelector('.card-open').addEventListener('click',goProfileDetail);
+      card.querySelector('.profile-details-btn').addEventListener('click',goProfileDetail);
+      bindProfileCardSwipe(card,rows,renderSelection);
+
+      els.grid.appendChild(card);
+      preloadAdjacentProfileRows(selectedIndex);
+    });
+
+    els.pagination.hidden=pages<=1;
+    els.pageInfo.textContent=`Page ${currentPage+1} / ${pages}`;
+    els.prevBtn.disabled=currentPage===0;
+    els.nextBtn.disabled=currentPage>=pages-1;
+  }
+
+  function renderCatalogue(){
+    els.grid.innerHTML='';
+    if(activeCategory==='profiles'){
+      renderProfileCatalogue();
+      return;
+    }
+
+    // When one product is selected, the catalogue becomes a finish gallery.
+    // This intentionally keeps every available colour/finish of that product visible.
+    const productGroup=selectedProductGroup();
+    if(productGroup){
+      const baseRows=rowsForSelectedProductAllFinishes(productGroup);
+      let finishes=unique(baseRows.map(r=>r.finish)).sort(finishSort);
+      if(state.finish)finishes=finishes.filter(f=>f===state.finish);
+      const cards=finishes.map(f=>{
+        const rows=baseRows.filter(r=>r.finish===f);
+        return {finish:f,rows,rep:representativeVariant(productGroup,rows,f)};
+      }).filter(x=>x.rows.length);
+
+      els.catalogueCount.textContent=`${productGroup.name} · ${cards.length} finish${cards.length===1?'':'es'} · ${baseRows.length} matching variant${baseRows.length===1?'':'s'}`;
+      if(!records.length){els.grid.innerHTML=`<div class="empty"><h3>Catalogue data unavailable</h3><p>The page reads Name, Item No, Vf, Imax, CCT, CRI, Cutout, Beam Angle, Wattage, Batch Code, Stock Code, BIS No, BIS SEC, MRP, MFG BY and IMAGE.</p><span class="btn" style="cursor:default">CSV file not found</span></div>`;els.pagination.hidden=true;return}
+      if(!cards.length){els.grid.innerHTML=`<div class="empty"><h3>No matching finishes</h3><p>${escapeHtml(productGroup.name)} has no variants matching the active technical filters.</p><button class="btn" id="emptyReset" type="button">Reset All Filters</button></div>`;els.pagination.hidden=true;$('emptyReset').addEventListener('click',resetAll);return}
+
+      const pages=Math.ceil(cards.length/getPageSize());currentPage=Math.min(currentPage,pages-1);const pageStart=currentPage*getPageSize();
+      cards.slice(pageStart,pageStart+getPageSize()).forEach(entry=>{
+        const {finish,rows,rep}=entry;const img=rep&&rep.image;const card=document.createElement('article');card.className='card finish-gallery-card';
+        card.innerHTML=`<button class="card-open" type="button"><div class="card-image">${img?`<img src="${escapeHtml(optimizeImageUrl(img,420))}" alt="${escapeHtml(productGroup.name)} · ${escapeHtml(finish)}" loading="lazy" decoding="async" fetchpriority="low">`:'<span style="font-size:11px;color:#aaa">No image</span>'}</div><div class="card-body"><div class="card-kicker">${escapeHtml(summarize(rows.map(v=>v.itemNo)))}</div><h3 class="card-title">${escapeHtml(productGroup.name)}</h3><div class="card-price">${rep&&rep.mrp?`MRP ${escapeHtml(rep.mrp)}`:'Price on request'}</div><div class="finish-name">${swatchHtml(finish)}<span>${escapeHtml(finish)}</span></div><div class="spec-row"><div class="mini-spec"><div class="mini-label">Wattage</div><div class="mini-value">${escapeHtml(summarize(rows.map(v=>v.wattage)))}</div></div><div class="mini-spec"><div class="mini-label">CCT</div><div class="mini-value">${escapeHtml(summarizeCCT(rows.map(v=>v.cct)))}</div></div><div class="mini-spec"><div class="mini-label">Beam</div><div class="mini-value beam-values">${escapeHtml(summarizeAll(rows.map(v=>v.beam)))}</div></div><div class="mini-spec"><div class="mini-label">CRI</div><div class="mini-value">${escapeHtml(summarize(rows.map(v=>v.cri)))}</div></div></div><div class="card-foot"><span>${rows.length} variant${rows.length===1?'':'s'}</span><span class="view-detail-cta">View Details <b>→</b></span></div></div></button>`;
+        card.querySelector('.card-open').addEventListener('click',()=>goToDetail(productGroup,finish));els.grid.appendChild(card);
+      });
+      els.pagination.hidden=pages<=1;els.pageInfo.textContent=`Page ${currentPage+1} / ${pages}`;els.prevBtn.disabled=currentPage===0;els.nextBtn.disabled=currentPage>=pages-1;return;
+    }
+
+    const total=viewGroups.length;const totalMatched=viewGroups.reduce((n,g)=>n+g.matchedVariants.length,0);els.catalogueCount.textContent=`${total} product${total===1?'':'s'} · ${totalMatched} matching variant${totalMatched===1?'':'s'} · ${records.length} total`;
+    if(!records.length){els.grid.innerHTML=`<div class="empty"><h3>Catalogue data unavailable</h3><p>The page reads Name, Item No, Vf, Imax, CCT, CRI, Cutout, Beam Angle, Wattage, Batch Code, Stock Code, BIS No, BIS SEC, MRP, MFG BY and IMAGE. Finish is resolved automatically from the stock-code suffix.</p><span class="btn" style="cursor:default">CSV file not found</span></div>`;els.pagination.hidden=true;return}
+    if(!total){els.grid.innerHTML=`<div class="empty"><h3>No matching variants</h3><p>The filters work at variant level, not only product level. Remove one or more filters to widen the result.</p><button class="btn" id="emptyReset" type="button">Reset All Filters</button></div>`;els.pagination.hidden=true;$('emptyReset').addEventListener('click',resetAll);return}
+    const pages=Math.ceil(total/getPageSize());currentPage=Math.min(currentPage,pages-1);const pageStart=currentPage*getPageSize();viewGroups.slice(pageStart,pageStart+getPageSize()).forEach(g=>{
+      const rows=g.matchedVariants,allFinishes=unique(g.variants.map(v=>v.finish)).sort(finishSort),matchedFinishes=unique(rows.map(v=>v.finish)).sort(finishSort);const card=document.createElement('article');card.className='card';let localFinish=state.finish||cardFinishSelections.get(cardFinishKey(g))||'';const rep=representativeVariant(g,g.variants,localFinish);if(!localFinish&&rep&&rep.finish){localFinish=rep.finish;cardFinishSelections.set(cardFinishKey(g),localFinish)}const img=rep&&rep.image;
+      card.innerHTML=`<div class="series-variant-badge">${g.variants.length} variant${g.variants.length===1?'':'s'}</div>${rows.length<g.variants.length?`<div class="match-tag">${rows.length} match${rows.length===1?'':'es'}</div>`:''}<button class="card-open" type="button"><div class="card-image">${img?`<img src="${escapeHtml(optimizeImageUrl(img,420))}" alt="${escapeHtml(g.name)}" loading="lazy" decoding="async" fetchpriority="low">`:'<span style="font-size:11px;color:#aaa">No image</span>'}</div><div class="card-body"><div class="card-kicker">${escapeHtml(summarize(rows.map(v=>v.itemNo)))}</div><h3 class="card-title">${escapeHtml(g.name)}</h3><div class="card-price" data-card-rate>${rep&&rep.mrp?`MRP ${escapeHtml(rep.mrp)}`:'Price on request'}</div><div class="spec-row"><div class="mini-spec"><div class="mini-label">Wattage</div><div class="mini-value">${escapeHtml(summarize(rows.map(v=>v.wattage)))}</div></div><div class="mini-spec"><div class="mini-label">CCT</div><div class="mini-value">${escapeHtml(summarizeCCT(rows.map(v=>v.cct)))}</div></div><div class="mini-spec"><div class="mini-label">Beam</div><div class="mini-value beam-values">${escapeHtml(summarizeAll(rows.map(v=>v.beam)))}</div></div><div class="mini-spec"><div class="mini-label">CRI</div><div class="mini-value">${escapeHtml(summarize(rows.map(v=>v.cri)))}</div></div></div></div></button><div class="card-body" style="padding-top:0"><div class="card-finishes"><span class="card-finish-label">Finishes</span>${allFinishes.map(f=>`<button class="card-swatch ${localFinish===f?'active':''}" type="button" data-card-finish="${escapeHtml(f)}" title="${escapeHtml(f)}">${swatchHtml(f)}</button>`).join('')}</div><div class="card-foot"><span>${rows.length}${rows.length!==g.variants.length?` / ${g.variants.length}`:''} variant${g.variants.length===1?'':'s'}</span><button class="view-detail-cta" type="button">View Details <b>→</b></button></div></div>`;
+      card.querySelector('.card-open').addEventListener('click',e=>{if(card.dataset.suppressOpen==='1'){e.preventDefault();e.stopPropagation();card.dataset.suppressOpen='0';return}goToDetail(g,state.finish||cardFinishSelections.get(cardFinishKey(g))||'')});card.querySelector('.view-detail-cta').addEventListener('click',()=>goToDetail(g,state.finish||cardFinishSelections.get(cardFinishKey(g))||''));card.querySelectorAll('[data-card-finish]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();const next=btn.dataset.cardFinish;const current=cardFinishSelections.get(cardFinishKey(g))||state.finish||allFinishes[0];const from=allFinishes.indexOf(current),to=allFinishes.indexOf(next);smoothChangeCardFinish(card,g,allFinishes,next,to>=from?1:-1)}));bindMobileFinishSwipe(card,g,allFinishes);bindDesktopFinishControls(card,g,allFinishes);preloadAdjacentCardFinishes(g,allFinishes,cardFinishSelections.get(cardFinishKey(g))||state.finish||allFinishes[0]);els.grid.appendChild(card)
+    });
+    els.pagination.hidden=pages<=1;els.pageInfo.textContent=`Page ${currentPage+1} / ${pages}`;els.prevBtn.disabled=currentPage===0;els.nextBtn.disabled=currentPage>=pages-1;
+  }
+
+  function specCell(label,value){return `<div class="spec-cell"><div class="spec-label">${escapeHtml(label)}</div><div class="spec-value">${escapeHtml(value||'—')}</div></div>`}
+  function openDetail(group,preferredFinish=''){
+    activeGroup=group;const rows=(state.name===group.name?rowsForSelectedProductAllFinishes(group):(group.matchedVariants.length?group.matchedVariants:group.variants));const finishes=unique(rows.map(v=>v.finish)).sort(finishSort);activeFinish=preferredFinish&&finishes.includes(preferredFinish)?preferredFinish:(state.finish&&finishes.includes(state.finish)?state.finish:(finishes.includes('White')?'White':finishes[0]||''));els.detailTitle.textContent=group.name;els.detailKicker.textContent=summarize(rows.map(v=>v.itemNo));els.detailSub.textContent=rows.length===group.variants.length?`${rows.length} technical variant${rows.length===1?'':'s'} · ${finishes.length} finish${finishes.length===1?'':'es'}`:`${rows.length} matching of ${group.variants.length} total variants · ${finishes.length} available finish${finishes.length===1?'':'es'}`;
+    els.specGrid.innerHTML=[['Vf',summarize(rows.map(v=>v.vf))],['Imax',summarize(rows.map(v=>v.imax))],['Wattage',summarize(rows.map(v=>v.wattage))],['CCT',summarizeCCT(rows.map(v=>v.cct))],['CRI',summarize(rows.map(v=>v.cri))],['Beam Angle',summarizeAll(rows.map(v=>v.beam))],['Cutout',summarize(rows.map(v=>v.cutout))],['Batch Code',summarize(rows.map(v=>v.batchCode))],['Stock Codes',`${unique(rows.map(v=>v.stockCode)).length} available`],['BIS No',summarize(rows.map(v=>v.bisNo))],['BIS SEC',summarizeAll(rows.map(v=>v.bisSpec),' · ')],['MRP',summarize(rows.map(v=>v.mrp))],['MFG BY',summarize(rows.map(v=>v.mfgBy))]].map(([l,v])=>specCell(l,v)).join('');renderDetailFinishOptions(rows);renderDetailImageAndRows(rows);els.modal.classList.add('open');document.body.style.overflow='hidden'
+  }
+  function renderDetailFinishOptions(rows){const finishes=unique(rows.map(v=>v.finish)).sort(finishSort);els.detailFinishOptions.innerHTML=finishes.map(f=>`<button class="finish-option ${activeFinish===f?'active':''}" type="button" data-detail-finish="${escapeHtml(f)}">${swatchHtml(f)}<span>${escapeHtml(f)}</span></button>`).join('');els.detailFinishOptions.querySelectorAll('[data-detail-finish]').forEach(btn=>btn.addEventListener('click',()=>{activeFinish=btn.dataset.detailFinish;renderDetailFinishOptions(rows);renderDetailImageAndRows(rows)}))}
+  function renderDetailImageAndRows(rows){
+    const finishRows=activeFinish?rows.filter(r=>r.finish===activeFinish):rows;const urls=unique(finishRows.map(v=>v.image));if(!activeImage||!urls.includes(activeImage))activeImage=urls[0]||'';els.thumbs.innerHTML='';if(activeImage){els.detailImage.src=optimizeImageUrl(activeImage,1200);els.detailImage.alt=`${activeGroup.name} · ${activeFinish}`;}else{els.detailImage.removeAttribute('src');els.detailImage.alt='No product image'}
+    urls.forEach(url=>{const b=document.createElement('button');b.type='button';b.className='thumb'+(url===activeImage?' active':'');b.innerHTML=`<img src="${escapeHtml(optimizeImageUrl(url,180))}" alt="${escapeHtml(activeFinish)}" loading="lazy" decoding="async">`;b.addEventListener('click',()=>{activeImage=url;renderDetailImageAndRows(rows)});els.thumbs.appendChild(b)});els.finishNote.textContent=activeFinish?`Selected finish: ${activeFinish}`:'All finishes';renderVariants(finishRows)
+  }
+  function renderVariants(rows){els.variantFilterNote.textContent=`${rows.length} variant${rows.length===1?'':'s'} shown${activeFinish?` · ${activeFinish}`:''}`;els.variantBody.innerHTML=rows.map(v=>`<tr><td><span class="finish-cell">${swatchHtml(v.finish)}${escapeHtml(v.finish||'—')}</span></td><td>${escapeHtml(v.cct||'—')}</td><td>${escapeHtml(v.vf||'—')}</td><td>${escapeHtml(v.imax||'—')}</td><td>${escapeHtml(v.cri||'—')}</td><td>${escapeHtml(v.cutout||'—')}</td><td>${escapeHtml(v.beam||'—')}</td><td>${escapeHtml(v.wattage||'—')}</td><td>${escapeHtml(v.batchCode||'—')}</td><td>${escapeHtml(v.itemNo||'—')}</td><td class="stock">${escapeHtml(v.stockCode||'—')}</td><td>${escapeHtml(v.bisNo||'—')}</td><td class="bis-spec-cell">${escapeHtml(v.bisSpec||'—')}</td><td class="mrp-cell">${escapeHtml(v.mrp||'—')}</td><td class="mfg-cell">${escapeHtml(v.mfgBy||'—')}</td></tr>`).join('')}
+  function closeDetail(){els.modal.classList.remove('open');document.body.style.overflow='';activeGroup=null;activeFinish='';activeImage=''}
+
+  function syncStateFromUI(){state.q=els.searchBox.value.trim().toLowerCase();for(const f of filterFields)state[f]=filterEls[f].value}
+  function resetAll(){Object.keys(state).forEach(k=>state[k]='');els.searchBox.value='';for(const f of filterFields)filterEls[f].value='';currentPage=0;updateAll()}
+  function loadCSVText(text,label='CSV file'){
+    try{const rows=parseCSV(text);records=normalizeRows(rows);if(!records.length)throw new Error('No product rows were found in the CSV.');groups=activeCategory==='profiles'?groupProfileProducts(records):groupProducts(records);globalCatalogueCache[activeCategory]={records:[...records],groups:[...groups]};Object.keys(state).forEach(k=>state[k]='');els.searchBox.value='';for(const f of filterFields)filterEls[f].value='';currentPage=0;const finishes=unique(records.map(r=>r.finish));const unknown=finishes.filter(f=>!finishOrder.includes(f));els.status.innerHTML=`<strong>${escapeHtml(label)}</strong> · ${groups.length} products · ${records.length} variants · ${finishes.length} finishes${unknown.length?` · ${unknown.length} custom finish${unknown.length===1?'':'es'}`:''}`;updateAll()}catch(err){console.error(err);els.status.innerHTML=`<strong>Could not load CSV.</strong> ${escapeHtml(err.message||String(err))}`;records=[];groups=[];viewGroups=[];renderCatalogue()}
+  }
+  async function loadCategory(key){
+    const cfg=CATEGORIES[key];
+    if(!cfg)return;
+    ++globalSearchToken;
+    clearTimeout(globalSearchTimer);
+    document.body.classList.remove('global-search-mode');
+    globalSearchResults=[];
+    activeCategory=key;
+    document.body.classList.toggle('profiles-mode',key==='profiles');
+    cardFinishSelections.clear();
+    els.categoryTitle.textContent=cfg.label;
+    els.categoryTabs.querySelectorAll('[data-category]').forEach(btn=>btn.classList.toggle('active',btn.dataset.category===key));
+    els.status.innerHTML=`Loading <strong>${escapeHtml(cfg.label)}</strong> catalogue…`;
+    records=[];groups=[];viewGroups=[];currentPage=0;
+    Object.keys(state).forEach(k=>state[k]='');
+    els.searchBox.value='';
+    for(const f of filterFields) if(filterEls[f]) filterEls[f].value='';
+    renderCatalogue();
+    try{
+      const res=await fetch(encodeURI(cfg.file),{cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const text=await res.text();
+      loadCSVText(text,cfg.file);
+    }catch(err){
+      console.error(err);
+      els.status.innerHTML=`<strong>Could not load ${escapeHtml(cfg.file)}.</strong> Make sure this CSV exists inside the data folder.`;
+      records=[];groups=[];viewGroups=[];renderCatalogue();
+    }
+  }
+
+  if(els.csvInput) els.csvInput.addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>loadCSVText(reader.result,file.name);reader.onerror=()=>els.status.innerHTML='<strong>Could not read the selected CSV file.</strong>';reader.readAsText(file,'utf-8')});
+  els.searchBox.addEventListener('input',()=>{
+    state.q=els.searchBox.value.trim().toLowerCase();
+    currentPage=0;
+    clearTimeout(globalSearchTimer);
+    globalSearchTimer=setTimeout(()=>runGlobalSearch(state.q),140);
+  });
+  for(const f of filterFields)filterEls[f].addEventListener('change',()=>{syncStateFromUI();currentPage=0;updateAll()});els.moreBtn.addEventListener('click',()=>{const open=els.advancedFilters.classList.toggle('open');els.moreBtn.textContent=open?'Fewer Filters':'More Filters'});els.resetBtn.addEventListener('click',resetAll);
+  els.prevBtn.addEventListener('click',()=>{
+    if(currentPage>0){
+      currentPage--;
+      if(document.body.classList.contains('global-search-mode'))renderGlobalSearchResults(state.q);else renderCatalogue();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  });
+  els.nextBtn.addEventListener('click',()=>{
+    const total=document.body.classList.contains('global-search-mode')?globalSearchResults.length:viewGroups.length;
+    const pages=Math.ceil(total/getPageSize());
+    if(currentPage<pages-1){
+      currentPage++;
+      if(document.body.classList.contains('global-search-mode'))renderGlobalSearchResults(state.q);else renderCatalogue();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  });els.closeBtn.addEventListener('click',closeDetail);els.modal.addEventListener('click',e=>{if(e.target===els.modal)closeDetail()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&els.modal.classList.contains('open'))closeDetail()});
+  window.addEventListener('resize',()=>{
+    currentPage=0;
+    if(document.body.classList.contains('global-search-mode'))renderGlobalSearchResults(state.q);else renderCatalogue();
+  });
+  window.addEventListener('dragover',e=>{e.preventDefault();document.body.classList.add('drop-highlight')});window.addEventListener('dragleave',e=>{if(e.clientX===0&&e.clientY===0)document.body.classList.remove('drop-highlight')});window.addEventListener('drop',e=>{e.preventDefault();document.body.classList.remove('drop-highlight');const file=[...(e.dataTransfer?.files||[])].find(f=>/\.csv$/i.test(f.name));if(!file)return;const reader=new FileReader();reader.onload=()=>loadCSVText(reader.result,file.name);reader.readAsText(file,'utf-8')});
+  els.categoryTabs.querySelectorAll('[data-category]').forEach(btn=>btn.addEventListener('click',()=>loadCategory(btn.dataset.category)));
+  initKeusFilterSelects();
+
+  const productTrigger=$('keusProductTrigger');
+  if(productTrigger)productTrigger.addEventListener('click',e=>{
+    e.stopPropagation();
+    closeAllKeusFilterMenus();
+    const menu=$('keusProductMenu');
+    if(menu&&menu.hidden)openKeusProductMenu();else closeKeusProductMenu();
+  });
+  document.addEventListener('click',e=>{
+    const productWrap=$('keusProductSelect');
+    if(productWrap&&!productWrap.contains(e.target))closeKeusProductMenu();
+    if(!e.target.closest('.keus-filter-select'))closeAllKeusFilterMenus();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      closeKeusProductMenu();
+      closeAllKeusFilterMenus();
+    }
+  });
+
+  const headerSearchBtn=$('headerSearchBtn');
+  if(headerSearchBtn) headerSearchBtn.addEventListener('click',()=>{
+    els.searchBox.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>els.searchBox.focus(),260);
+  });
+  renderCatalogue();loadCategory('downlights');
+})();
+</script>
+<script>
+(function(){
+  const loader=document.getElementById('keusPageLoader');
+  if(!loader)return;
+  let hidden=false;
+  const hideLoader=()=>{
+    if(hidden)return;
+    hidden=true;
+    requestAnimationFrame(()=>{
+      loader.classList.add('is-hidden');
+      setTimeout(()=>loader.remove(),320);
+    });
+  };
+  if(document.readyState==='complete')setTimeout(hideLoader,120);
+  else window.addEventListener('load',()=>setTimeout(hideLoader,120),{once:true});
+  setTimeout(hideLoader,3500);
+})();
+</script>
 </body>
 </html>

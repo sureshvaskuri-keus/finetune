@@ -1,15 +1,5 @@
 # KEUS Lighting Catalogue
 
-## Accessibility, structure and performance update
-
-- Production styles and scripts are separated into `assets/css/catalogue.css`, `assets/js/catalogue.js`, `assets/css/light-details.css` and `assets/js/light-details.js`.
-- Legacy duplicate CSS/JavaScript and the unused theme implementation were removed.
-- Small text, muted-text contrast, keyboard focus indicators and mobile touch targets were upgraded.
-- Filters now have accessible names and custom dropdowns support Arrow keys, Home, End, Escape and Tab.
-- The product dialog manages initial focus, traps focus while open and restores focus when closed.
-- Catalogue requests and parsed category data are cached in memory, search text is precomputed, off-screen cards use rendering containment, and resize rendering is debounced.
-- Reduced-motion preferences are honoured across the interface.
-
 Updated UI accent uses #5b524a / #403a35 / #c6beb6. Product finish colours are not changed.
 
 The All Products control is a custom KEUS-styled dropdown. Product cards retain CSV order; the dropdown remains alphabetical. Each light series card shows its total variant count at the top-right.
